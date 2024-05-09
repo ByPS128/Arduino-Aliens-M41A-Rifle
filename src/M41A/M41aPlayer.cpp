@@ -11,8 +11,8 @@ void M41aPlayer::setup(byte newVolume)
   mySerial.begin(9600);
   delay(500);
 
-  enableACK();
-  //disableACK();
+  //enableACK();
+  disableACK();
 
   exe_cmd(CMD_INIT, 0, 0x02);
 

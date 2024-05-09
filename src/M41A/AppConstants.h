@@ -38,3 +38,5 @@ static const int SAMPLE_CLICK = 95;
 
 static const int SAMPLE_VOLUME_UP = 70;
 static const int SAMPLE_VOLUME_DOWN = SAMPLE_VOLUME_UP + 10;
+
+static const unsigned long LONG_PRESS_TIME = 1000;  // 1000 milisekund pro dlouhý stisk

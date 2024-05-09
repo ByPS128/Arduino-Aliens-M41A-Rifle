@@ -4,18 +4,23 @@
 #include "AppConstants.h"
 
 M41aSimulator::M41aSimulator()
-  : lastButton1_State(HIGH), lastButton2_State(HIGH), lastButtonVolume_State(HIGH), oldRotaryMasterValue(1), bulletsCount(95), newVolume(20), volumeDisplayed(false), fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false)
+  : lastButton1_State(HIGH), lastButton2_State(HIGH), lastButtonVolume_State(HIGH), oldRotaryMasterValue(1), 
+    bulletsCount(95), newVolume(20), volumeDisplayed(false), fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false),
+    button1IsPressed(false), button2IsPressed(false), buttonVolumeIsPressed(false), isVolumeEpromWriteFlag(false)
 {
 }
 
 void M41aSimulator::setup()
 {
+  #ifdef _DEBUG
   Serial.begin(9600);
   Serial.println("Booting..");
+  #endif
 
   display.setup(latch_Pin, clock_Pin, data_Pin, true);
   display.displaySegments(display.NNone, display.NNone);
 
+  readIsVolumeEpromWriteFlag();
   byte epromVolume = readVolumeFromEprom();
   player.setup(epromVolume);
   newVolume = epromVolume;
@@ -32,7 +37,7 @@ void M41aSimulator::setup()
 
   useSoftVolumeRotaryEncoder = true || (digitalPinToInterrupt(rotaryS1_Pin) != rotaryS1_Pin);
   #ifdef _DEDBUG
-  Serial.print("Volume uses ");
+  Serial.print("Volume rotary encoder uses ");
   Serial.print(useSoftVolumeRotaryEncoder ? "soft" : "interupt");
   Serial.println(" read.");
   #endif
@@ -57,16 +62,16 @@ void M41aSimulator::update()
 {
   player.update();
 
-  if (!weaponReadyPlayed) {
-    weaponReadyPlayed = true;
-    player.playWeaponReady();
-  }
+  // if (!weaponReadyPlayed) {
+  //   weaponReadyPlayed = true;
+  //   player.playWeaponReady();
+  // }
 
   doButton1();
   doButton2();
   doVolumeButton();
 
-  if (lastButton1_State == LOW && bulletsCount > 0)
+  if (button1IsPressed && bulletsCount > 0)
   {
     unsigned long currentMillis = millis();
     if (ledBlinkMillis < currentMillis) {
@@ -95,35 +100,23 @@ void M41aSimulator::update()
   processVolume();
 }
 
-void M41aSimulator::ledTurn()
-{
-  ledState = !ledState;
-  digitalWrite(led_Pin, ledState ? HIGH : LOW);
-}
-
-void M41aSimulator::ledOff()
-{
-  ledState = false;
-  digitalWrite(led_Pin, ledState ? HIGH : LOW);
-}
-
 void M41aSimulator::doButton1()
 {
   int button1_State = digitalRead(button1_Pin);
-  if (button1_State != lastButton1_State)
-  {  // Kontrola, zda došlo ke změně stavu
-    if (button1_State == LOW)
-    {
+  // Kontrola, zda došlo ke změně stavu
+  if (button1_State != lastButton1_State) {
+    button1IsPressed = button1_State == LOW;
+    if (button1IsPressed) {
+      player.playFire(bulletsCount);
       #ifdef _DEBUG
       Serial.println("Button 1 pressed!");
       #endif
-      fireButtonPressed();  // Zavolání funkce při stisku tlačítka
     } else {
+      ledOff();
+      player.pause();
       #ifdef _DEBUG
       Serial.println("Button 1 released!");
       #endif
-      ledOff();
-      player.pause();
     }
 
     // Aktualizace posledního stavu tlačítka
@@ -157,21 +150,18 @@ void M41aSimulator::doButton1()
   // }
 }
 
-void M41aSimulator::fireButtonPressed()
-{
-  player.playFire(bulletsCount);
-}
-
 void M41aSimulator::doButton2()
 {
   int button2_State = digitalRead(button2_Pin);
-  if (button2_State != lastButton2_State) {  // Kontrola, zda došlo ke změně stavu
-    if (button2_State == LOW)
+  // Kontrola, zda došlo ke změně stavu
+  if (button2_State != lastButton2_State) {
+    button2IsPressed = button2_State == LOW;
+    if (button2IsPressed)
     {
+      reloadMagazine();
       #ifdef _DEBUG
       Serial.println("Button 2 pressed!");
       #endif
-      reloadButtonPressed();  // Zavolání funkce při stisku tlačítka
     } else {
       #ifdef _DEBUG
       Serial.println("Button 2 released!");
@@ -183,7 +173,7 @@ void M41aSimulator::doButton2()
   }
 }
 
-void M41aSimulator::reloadButtonPressed()
+void M41aSimulator::reloadMagazine()
 {
   ledOff();
   player.playReload();
@@ -197,31 +187,60 @@ void M41aSimulator::reloadButtonPressed()
 
   displayBullets();
 }
- 
-void M41aSimulator::doVolumeButton()
-{
-  int buttonVolume_State = digitalRead(rotaryButton_Pin);
-  if (buttonVolume_State != lastButtonVolume_State)
-  {  // Kontrola, zda došlo ke změně stavu
-    if (buttonVolume_State == LOW)
-    {
-      #ifdef _DEBUG
-      Serial.println("Volume Button pressed!");
-      #endif
-      volumeButtonPressed();  // Zavolání funkce při stisku tlačítka
-    } else {
-      #ifdef _DEBUG
-      Serial.println("Volume Button released!");
-      #endif
-    }
 
-    // Aktualizace posledního stavu tlačítka
-    lastButtonVolume_State = buttonVolume_State;
-  }
+// Metoda rozpoznává krátký a dlouhý stisk tlačítka na rotary enkodéru.
+// Princip:
+// při stisku začnu měřit čas
+// pokud je tláčítko stále stisknuté a čas překoná long press timeout, jde o long press
+// pokud tlačítko uvilním a nebyl ohandlovaný long press, jde o short press.
+void M41aSimulator::doVolumeButton() {
+    int buttonVolume_State = digitalRead(rotaryButton_Pin);
+    static unsigned long buttonPressTime = 0; // Čas, kdy bylo tlačítko stisknuto
+    static bool isPressHandled = false; // Byla již akce pro stisk zpracována?
+
+    if (buttonVolume_State != lastButtonVolume_State) { // Detekce změny stavu tlačítka
+        lastButtonVolume_State = buttonVolume_State;
+        buttonVolumeIsPressed = buttonVolume_State == LOW; // Tlačítko bylo stisknuto ?
+
+        if (buttonVolumeIsPressed) { 
+            buttonPressTime = millis(); // Uložení času stisku
+            isPressHandled = false; // Resetování flagu pro zpracování akce
+            #ifdef _DEBUG
+            Serial.println("Volume Button pressed!");
+            #endif
+        } else { // Tlačítko bylo uvolněno
+            if (!isPressHandled) { // Kontrola, zda nebyla akce již zpracována
+                volumeButtonShortPress(); // Zpracování krátkého stisku
+                #ifdef _DEBUG
+                Serial.println("Short Press detected!");
+                #endif
+            }
+            #ifdef _DEBUG
+            Serial.println("Volume Button released!");
+            #endif
+        }
+    } else if (buttonVolume_State == LOW && !isPressHandled) {
+        // Kontrola, zda doba stisku přesáhla limit pro dlouhý stisk
+        if (millis() - buttonPressTime >= LONG_PRESS_TIME) {
+            volumeButtonLongPress(); // Zpracování dlouhého stisku
+            isPressHandled = true; // Nastavení flagu, že akce byla zpracována
+            #ifdef _DEBUG
+            Serial.println("Long Press detected!");
+            #endif
+        }
+    }
 }
 
-void M41aSimulator::volumeButtonPressed()
+void M41aSimulator::volumeButtonShortPress()
 {
+  // Kód pro zobrazení hlasitosti
+  if (player.Playing) return;
+  displayVolume();
+}
+
+void M41aSimulator::volumeButtonLongPress()
+{
+  // Kód pro uložení hlasitosti
   writeVolumeToEprom(player.getVolume());
   if (player.Playing) {
     return;
@@ -311,6 +330,18 @@ void M41aSimulator::doInternalVolumeDecisions()
   }
 }
 
+void M41aSimulator::ledTurn()
+{
+  ledState = !ledState;
+  digitalWrite(led_Pin, ledState ? HIGH : LOW);
+}
+
+void M41aSimulator::ledOff()
+{
+  ledState = false;
+  digitalWrite(led_Pin, ledState ? HIGH : LOW);
+}
+
 void M41aSimulator::displayBullets()
 {
   lastBulletsCount = bulletsCount;
@@ -332,8 +363,14 @@ void M41aSimulator::displayVolume()
   volumeDisplayed = true;
 }
 
+bool M41aSimulator::readIsVolumeEpromWriteFlag() {
+  byte storedFlag = EEPROM.read(INIT_FLAG_ADDRESS);
+  isVolumeEpromWriteFlag = storedFlag == INITIALIZED_FLAG;
+  return isVolumeEpromWriteFlag;
+}
+
 byte M41aSimulator::readVolumeFromEprom() {
-  if (EEPROM.read(INIT_FLAG_ADDRESS) == INITIALIZED_FLAG) {
+  if (isVolumeEpromWriteFlag) {
     return EEPROM.read(VOLUME_ADDRESS);
   } else {
     return DEFAULT_VOLUME_VALUE; // default volume value;
@@ -341,6 +378,12 @@ byte M41aSimulator::readVolumeFromEprom() {
 }
 
 void M41aSimulator::writeVolumeToEprom(byte volume) {
-  EEPROM.write(VOLUME_ADDRESS, volume);
-  EEPROM.write(INIT_FLAG_ADDRESS, INITIALIZED_FLAG);
+  byte storedVolume = readVolumeFromEprom();
+  if (storedVolume != volume) {
+    EEPROM.write(VOLUME_ADDRESS, volume);
+    if (!isVolumeEpromWriteFlag) {
+      EEPROM.write(INIT_FLAG_ADDRESS, INITIALIZED_FLAG);
+      isVolumeEpromWriteFlag = true;
+    }
+  }
 }

@@ -46,6 +46,10 @@ private:
   unsigned long ledBlinkMillis;
   bool volumeDisplayed;
   bool weaponReadyPlayed;
+  bool button1IsPressed;
+  bool button2IsPressed;
+  bool buttonVolumeIsPressed;
+  bool isVolumeEpromWriteFlag;
 
 private:
   M41aPlayer player;
@@ -64,17 +68,18 @@ private:
   void ledOff();
   //
   void doButton1();
-  void fireButtonPressed();
   void doButton2();
-  void reloadButtonPressed();
+  void reloadMagazine();
   void doVolumeButton();
-  void volumeButtonPressed();
+  void volumeButtonShortPress();
+  void volumeButtonLongPress();
   //
   void processVolume();
   void doSoftVolumeRotaryEncoder();
   void displayBullets();
   void displayVolume();
   //
+  bool readIsVolumeEpromWriteFlag();
   byte readVolumeFromEprom();
   void writeVolumeToEprom(byte volume);
 };
