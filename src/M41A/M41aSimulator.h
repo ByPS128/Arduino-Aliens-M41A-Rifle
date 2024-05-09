@@ -69,7 +69,10 @@ private:
   //
   void doButton1();
   void doButton2();
-  void reloadMagazine();
+  void cock();
+  void magazineReload();
+  void magazineEject();
+  void magazineLoad();
   void doVolumeButton();
   void volumeButtonShortPress();
   void volumeButtonLongPress();

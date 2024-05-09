@@ -158,7 +158,7 @@ void M41aSimulator::doButton2()
     button2IsPressed = button2_State == LOW;
     if (button2IsPressed)
     {
-      reloadMagazine();
+      magazineReload();
       #ifdef _DEBUG
       Serial.println("Button 2 pressed!");
       #endif
@@ -173,18 +173,33 @@ void M41aSimulator::doButton2()
   }
 }
 
-void M41aSimulator::reloadMagazine()
+void M41aSimulator::cock()
 {
   ledOff();
-  player.playReload();
+  player.playCock();
+}
 
-  if (bulletsCount <= 0)
-  {
-    bulletsCount = 95;
-  } else {
-    bulletsCount--;
-  }
+void M41aSimulator::magazineReload()
+{
+  player.playMagazineReload();
+  bulletsCount = 95;
+  ledOff();
+  displayBullets();
+}
 
+void M41aSimulator::magazineEject()
+{
+  player.playMagazineEject();
+  bulletsCount = 0;
+  ledOff();
+  displayBullets();
+}
+
+void M41aSimulator::magazineLoad()
+{
+  player.playMagazineLoad();
+  bulletsCount = 95;
+  ledOff();
   displayBullets();
 }
 
@@ -234,7 +249,7 @@ void M41aSimulator::doVolumeButton() {
 void M41aSimulator::volumeButtonShortPress()
 {
   // Kód pro zobrazení hlasitosti
-  if (player.Playing) return;
+  if (player.getPlaying()) return;
   displayVolume();
 }
 
@@ -242,7 +257,7 @@ void M41aSimulator::volumeButtonLongPress()
 {
   // Kód pro uložení hlasitosti
   writeVolumeToEprom(player.getVolume());
-  if (player.Playing) {
+  if (player.getPlaying()) {
     return;
   }
 
@@ -266,18 +281,18 @@ void M41aSimulator::processVolume()
   // Hlasitost se změnila
   if (newVolume > volume)
   {
-    player.volumeINC();
+    player.volumeIncrement();
     #ifdef _DEBUG
     Serial.print("Volume up: ");
     #endif
   } else {
-    player.volumeDEC();
+    player.volumeDecrement();
     #ifdef _DEBUG
     Serial.print("Volume down: ");
     #endif
   }
 
-  if (!player.Playing) {
+  if (!player.getPlaying()) {
     displayVolume();
     // if (newVolume > volume)
     // {

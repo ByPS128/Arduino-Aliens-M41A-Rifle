@@ -24,10 +24,16 @@ static const int SAMPLE_COCK_LAST = 14;
 static const int SAMPLE_EMPTY_MAGAZINE_FIRST = 20;
 static const int SAMPLE_EMPTY_MAGAZINE_LAST = 24;
 
-static const int SAMPLE_MAGAZINE_EJECT = 30; // 30-31
-static const int SAMPLE_MAGAZINE_LOAD = 40; // 40-42
+static const int SAMPLE_MAGAZINE_EJECT_FIRST = 30;
+static const int SAMPLE_MAGAZINE_EJECT_LAST = 31;
 
-static const int SAMPLE_GRTANADE_FIRE = 50; // 50-52
+static const int SAMPLE_MAGAZINE_LOAD_FIRST = 40;
+static const int SAMPLE_MAGAZINE_LOAD_LAST = 42;
+
+static const int SAMPLE_MAGAZINE_RELOAD_FIRST = 50;
+static const int SAMPLE_MAGAZINE_RELOAD_LAST = 51;
+
+static const int SAMPLE_GRANADE_FIRE = 60; // 60-62
 
 static const int SAMPLE_CARD_INSERTED = 90;
 static const int SAMPLE_CARD_REMOVED = 91;
