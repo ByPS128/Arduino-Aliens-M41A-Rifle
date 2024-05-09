@@ -1,0 +1,21 @@
+Detailní popis produktu
+Mikro step-down měnič, nastavitelný
+Jestli chceš pracovat s velkým proudem, zajistěte si odvod tepla!
+
+Podle dostupných informací se na trhu objevily tyto moduly, které nejsou osazeny originálním čipem a mohou způsobit zničení elektroniky připojené k takovému modulu. Námi dodávané moduly jsou osazeny originálním čipem s označením |AGC(N).
+
+Specifikace:
+Řídící obvod: MP2315
+vstupní napětí: DC 4,5-24V
+výstupní napětí: nastavitelný a pevný výstup
+nastavitelný rozsah: 0,8-17V, pevné napětí 1.8V 2.5V 3.3V 5V 9V 12V
+výstupní proud: 3A (max)
+učinnost: do 97.5% (in 6.5 out 5V 0.7A)
+frekvence spínání: 500KHz
+ripple Wave: 20mV (in 12V out 5V 3A)
+ochrana proti přepětí: ne
+statický proud: 0.85mA
+rozměry: 20x11x5mm
+
+
+Výchozí výstupní napětí je nastavitelné, pokud potřebuješ pevně výstupní napětí, rozřízni cestu na obrázku a pak spoj kontakty (1.8, 2.5, 3.3, 5, 9, 12V)

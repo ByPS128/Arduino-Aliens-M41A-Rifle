@@ -1,0 +1,22 @@
+Čip: MH2024K-24SS
+Napájení: 3.2 - 5V
+Integrovaný 3W zesilovač
+Impedance reproduktoru: 3Ω
+Podpora audio formátů: MP3, WAW a WMA
+Podpora microSD karet: FAT16 a FAT32
+Přehrávání dat přes sériový port (UART) tak přes AD tlačítka
+Podpora vzorkovacích frekvencí (KHz): 8 / 11.025 / 12/16 / 22.05 / 24/32 / 44.1 / 48
+24-bit DAC výstup, dynamický rozsah: 90dB, SNR: 85dB
+Plná podpora FAT16, FAT32 souborového systému, SD karty, U disk až 32G, 64M bytes v NORFLASH
+Podpora do 100 adresářů, které mohou obsahovat až 255 skladeb
+30 úrovní nastavení hlasitosti, 6 úrovní EQ
+Rozměry: 21x21mm
+
+
+Detailní popis produktu
+Modul miniaturního kompletního mp3 přehrávače. Ideální pro stavbu jednoduchého digitálního mp3 přehrávače s Arduino. Připojíte pouze dva vývody (Rx, Tx) pro komunikaci s Arduino, napájení a výstup do reproduktoru (sluchátek). Lze jej ovládat i tlačítky a tak půjde využít samostatně bez Arduino.
+
+Obsahuje microSD čtečku karet a automaticky rozpozná audio soubory.
+
+Použitý čip MH2024K-24SS je plně kompatibilní s čipem YX5200-24SS použitým v originálním modulu DFRobot. Oba čipy se již v současné době nevyrábí a tudíž je nedoporučujeme pro nové konstrukce. Oba tyto čipy jsou podle dostupných informací nahrazeny čipem MH2024K-16SS.
+
