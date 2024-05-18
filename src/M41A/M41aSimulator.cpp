@@ -4,9 +4,10 @@
 #include "AppConstants.h"
 
 M41aSimulator::M41aSimulator()
-  : lastButton1_State(HIGH), lastButton2_State(HIGH), lastButtonVolume_State(HIGH), oldRotaryMasterValue(1), 
-    bulletsCount(95), newVolume(20), volumeDisplayed(false), fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false),
-    button1IsPressed(false), button2IsPressed(false), buttonVolumeIsPressed(false), isVolumeEpromWriteFlag(false)
+  : lastButton1_State(HIGH), lastButton2_State(HIGH), lastButton3_State(HIGH), lastButton4_State(HIGH), lastButtonVolume_State(HIGH),
+    oldRotaryMasterValue(1), bulletsCount(95), newVolume(20), volumeDisplayed(false), fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false),
+    button1IsPressed(false), button2IsPressed(false), button3IsPressed(false), button4IsPressed(false),
+    buttonVolumeIsPressed(false), isVolumeEpromWriteFlag(false), isGranadeLoaded(false)
 {
 }
 
@@ -17,13 +18,12 @@ void M41aSimulator::setup()
   Serial.println("Booting..");
   #endif
 
-  display.setup(latch_Pin, clock_Pin, data_Pin, true);
-  display.displaySegments(display.NNone, display.NNone);
-
   readIsVolumeEpromWriteFlag();
   byte epromVolume = readVolumeFromEprom();
-  player.setup(epromVolume);
   newVolume = epromVolume;
+
+  display.setup(latch_Pin, clock_Pin, data_Pin, true);
+  display.displaySegments(display.NNone, display.NNone);
 
   randomSeed(millis());
 
@@ -33,7 +33,14 @@ void M41aSimulator::setup()
   pinMode(button2_Pin, INPUT_PULLUP);
   digitalWrite(button2_Pin, HIGH);
 
+  pinMode(button3_Pin, INPUT_PULLUP);
+  digitalWrite(button3_Pin, HIGH);
+
+  pinMode(button4_Pin, INPUT_PULLUP);
+  digitalWrite(button4_Pin, HIGH);
+
   pinMode(led_Pin, OUTPUT);
+  granadeLedAnimator.setup(ledGranade_Pin, GRANADE_FLASH_FADEOUT_TIME);
 
   useSoftVolumeRotaryEncoder = true || (digitalPinToInterrupt(rotaryS1_Pin) != rotaryS1_Pin);
   #ifdef _DEDBUG
@@ -56,19 +63,26 @@ void M41aSimulator::setup()
 
   displayBullets();
   ledOff();
+
+  player.setup(epromVolume);
+  player.setVolume(epromVolume);
 }
 
 void M41aSimulator::update()
 {
   player.update();
+  granadeLedAnimator.update();
 
   // if (!weaponReadyPlayed) {
   //   weaponReadyPlayed = true;
   //   player.playWeaponReady();
   // }
 
-  doButton1();
-  doButton2();
+  doButton1FireRifle();
+  doButton2MagazineReload();
+  doButton3Cock();
+  doButton4GranadeRelaodOrFire();
+
   doVolumeButton();
 
   if (button1IsPressed && bulletsCount > 0)
@@ -100,14 +114,14 @@ void M41aSimulator::update()
   processVolume();
 }
 
-void M41aSimulator::doButton1()
+void M41aSimulator::doButton1FireRifle()
 {
   int button1_State = digitalRead(button1_Pin);
   // Kontrola, zda došlo ke změně stavu
   if (button1_State != lastButton1_State) {
     button1IsPressed = button1_State == LOW;
     if (button1IsPressed) {
-      player.playFire(bulletsCount);
+      player.playRifleFire(bulletsCount);
       #ifdef _DEBUG
       Serial.println("Button 1 pressed!");
       #endif
@@ -122,35 +136,9 @@ void M41aSimulator::doButton1()
     // Aktualizace posledního stavu tlačítka
     lastButton1_State = button1_State;
   }
-
-  // if (lastButton1_State == LOW && bulletsCount > 0)
-  // {
-  //   // Dokud je tlačítko stisknuto, probíhá:
-  //   //  * odpočet nábojů v zásobníku, podle zvoleného intervalu pro odpočet
-  //   //  * blikání ledkou, podle zvolenohé interfavlu pro blikání
-  //   unsigned long currentMillis = millis();
-
-  //   // Odpočet nábojů
-  //   if (fireMillis < currentMillis) {
-  //     fireMillis = currentMillis + FIRE_COUNTDOWN_INTERVAL;
-  //     bulletsCount--;
-  //     displayBullets();
-  //     if (bulletsCount == 0)
-  //     {
-  //       ledOff();
-  //       player.playEmptyMagazine();
-  //     }
-  //   }
-
-  //   // Blikání ledkou
-  //   if (ledBlinkMillis < currentMillis) {
-  //     ledBlinkMillis = currentMillis + LED_BLINK_INTERVAL;
-  //     ledTurn();
-  //   }
-  // }
 }
 
-void M41aSimulator::doButton2()
+void M41aSimulator::doButton2MagazineReload()
 {
   int button2_State = digitalRead(button2_Pin);
   // Kontrola, zda došlo ke změně stavu
@@ -173,10 +161,79 @@ void M41aSimulator::doButton2()
   }
 }
 
+void M41aSimulator::doButton3Cock()
+{
+  int button3_State = digitalRead(button3_Pin);
+  // Kontrola, zda došlo ke změně stavu
+  if (button3_State != lastButton3_State) {
+    button3IsPressed = button3_State == LOW;
+    if (button3IsPressed)
+    {
+      cock();
+      #ifdef _DEBUG
+      Serial.println("Button 3 pressed!");
+      #endif
+    } else {
+      #ifdef _DEBUG
+      Serial.println("Button 3 released!");
+      #endif
+    }
+
+    // Aktualizace posledního stavu tlačítka
+    lastButton3_State = button3_State;
+  }
+}
+
+void M41aSimulator::doButton4GranadeRelaodOrFire()
+{
+  int button4_State = digitalRead(button4_Pin);
+  // Kontrola, zda došlo ke změně stavu
+  if (button4_State != lastButton4_State) {
+    button4IsPressed = button4_State == LOW;
+    if (button4IsPressed)
+    {
+      if (isGranadeLoaded) {
+        granadeFire();
+      } else {
+        granadeLoad();
+      }
+      isGranadeLoaded = !isGranadeLoaded;
+      #ifdef _DEBUG
+      Serial.println("Button 4 pressed!");
+      #endif
+    } else {
+      #ifdef _DEBUG
+      Serial.println("Button 4 released!");
+      #endif
+    }
+
+    // Aktualizace posledního stavu tlačítka
+    lastButton4_State = button4_State;
+  }
+}
+
+void M41aSimulator::granadeLoad()
+{
+  player.playGranadeLoad();
+}
+
+void M41aSimulator::granadeFire()
+{
+  player.playGranadeFire();
+  granadeLedAnimator.ledAnimationStart();
+}
+
+void M41aSimulator::granadeExplosion()
+{
+  player.playGranadeExplosion();
+}
+
 void M41aSimulator::cock()
 {
-  ledOff();
   player.playCock();
+  bulletsCount = 95;
+  ledOff();
+  displayBullets();
 }
 
 void M41aSimulator::magazineReload()

@@ -3,22 +3,25 @@
 #include <Arduino.h>
 #include "M41aPlayer.h"
 #include "TwoSegmentDisplay.h"
+#include "GranadeLedAnimator.h"
+
 
 //# define ACTIVATED LOW
 
 class M41aSimulator {
 private:  
-  const int button1_Pin = 4; // spoušť puška
-  const int button2_Pin = 5; // přebít
-  const int button3_Pin = 6; // granátomet tam
-  const int button4_Pin = 7; // granátomet zpět
-  const int button5_Pin = 8; // zásobník výměna 
+  const int button1_Pin = A2; // spoušť puška
+  const int button2_Pin = A3; // zásobník výměna
+  const int button3_Pin = A4; // natáhnout závěr
+  const int button4_Pin = A5; // spoušť granátomet / nabít granátomet
+  const int button5_Pin = A6; // reserved
 
   const int rotaryS1_Pin = 9; // volume encoder
   const int rotaryS2_Pin = 10; // volume encoder
   const int rotaryButton_Pin = A1; // rotary encoder button
 
   const int led_Pin = A0; 
+  const int ledGranade_Pin = 5; // must be PWM
   
   // Define Connections to 74HC595
   const int latch_Pin = 12;  //74HC595 RCLK  pin 12 ST_CP (LAOD) - zelený 
@@ -30,6 +33,8 @@ private:
 private:
   int lastButton1_State;
   int lastButton2_State;
+  int lastButton3_State;
+  int lastButton4_State;
   int lastButtonVolume_State;
 
   // Proměnné pro uchování posledního stavu
@@ -48,12 +53,16 @@ private:
   bool weaponReadyPlayed;
   bool button1IsPressed;
   bool button2IsPressed;
+  bool button3IsPressed;
+  bool button4IsPressed;
   bool buttonVolumeIsPressed;
   bool isVolumeEpromWriteFlag;
+  bool isGranadeLoaded;
 
 private:
   M41aPlayer player;
   TwoSegmentDisplay display;
+  GranadeLedAnimator granadeLedAnimator;
   void (*afterPlaybackDelegate)() = nullptr;
 
 public:
@@ -67,12 +76,21 @@ private:
   void ledTurn();
   void ledOff();
   //
-  void doButton1();
-  void doButton2();
+  void doButton1FireRifle();
+  void doButton2MagazineReload();
+  void doButton3Cock();
+  void doButton4GranadeRelaodOrFire();
+  //
+  void granadeLoad();
+  void granadeFire();
+  void granadeExplosion();
+  //
   void cock();
+  //
   void magazineReload();
   void magazineEject();
   void magazineLoad();
+  //
   void doVolumeButton();
   void volumeButtonShortPress();
   void volumeButtonLongPress();

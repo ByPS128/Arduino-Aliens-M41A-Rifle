@@ -33,7 +33,9 @@ static const int SAMPLE_MAGAZINE_LOAD_LAST = 42;
 static const int SAMPLE_MAGAZINE_RELOAD_FIRST = 50;
 static const int SAMPLE_MAGAZINE_RELOAD_LAST = 51;
 
-static const int SAMPLE_GRANADE_FIRE = 60; // 60-62
+static const int SAMPLE_GRANADE_LOAD = 65;
+static const int SAMPLE_GRANADE_FIRE = 60; // 60-62 - variations
+static const int SAMPLE_GRANADE_EXPLOSION = 66; // 66-67 - variations
 
 static const int SAMPLE_CARD_INSERTED = 90;
 static const int SAMPLE_CARD_REMOVED = 91;
@@ -44,5 +46,10 @@ static const int SAMPLE_CLICK = 95;
 
 static const int SAMPLE_VOLUME_UP = 70;
 static const int SAMPLE_VOLUME_DOWN = SAMPLE_VOLUME_UP + 10;
+
+static const int GRANADE_BALISTIC_DELAY_MIN = 500;
+static const int GRANADE_BALISTIC_DELAY_MAX = 3000;
+
+static const int GRANADE_FLASH_FADEOUT_TIME = 700;
 
 static const unsigned long LONG_PRESS_TIME = 1000;  // 1000 milisekund pro dlouhý stisk

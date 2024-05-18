@@ -9,6 +9,8 @@ private:
   DFPlay dfPlay;
   int lastFireInstrument;
   int lastEmptyMagazineInstrument;
+  unsigned long explosionTime = 0; // Čas pro náhodnou explozi
+  bool explosionScheduled = false; // Zda je exploze naplánovaná
 
 private:
   volatile int volume = 20;
@@ -29,7 +31,8 @@ public:
   void setEqualizer(byte equalizerType);
 
 public:
-  void playFire(int bulletsCount);
+  void resetGranadeExplositon();
+  void playRifleFire(int bulletsCount);
   void playCock();
   void playMagazineReload();
   void playMagazineEject();
@@ -43,4 +46,7 @@ public:
   void playCardRemoved();
   void playLowBattery();
   void playWeaponReady();
+  void playGranadeLoad();
+  void playGranadeFire();
+  void playGranadeExplosion();
 };

@@ -8,18 +8,16 @@ void DFPlay::setup(byte newVolume, bool enableAck) {
   playing = false;
 
   mySerial.begin(9600);
-  delay(500);
-
   if (enableAck) {
     enableACK();
   } else {
     disableACK();
   }
 
-  exe_cmd(CMD_INIT, 0, DFPLAYER_DEVICE_SD);
+  reset();
+  init();
 
-  volume = newVolume;
-  exe_cmd(CMD_SET_VOLUME, 0, volume);
+  setVolume(newVolume);
 
 #ifdef _DEBUG
   Serial.println("DFPlayer ready");
@@ -28,6 +26,17 @@ void DFPlay::setup(byte newVolume, bool enableAck) {
 
 void DFPlay::update() {
   available();
+}
+
+void DFPlay::reset() {
+  exe_cmd(CMD_RESET, 0, 0);
+  delay(DFPLAYER_RESET_TIME); // Počkám, až se DFPlayer restartuje
+}
+
+void DFPlay::init()
+{
+  exe_cmd(CMD_INIT, 0, DFPLAYER_DEVICE_SD);
+  delay(DFPLAYER_INIT_TIME); // Počkaám, až se DFPlayer inicializuje
 }
 
 void DFPlay::play(byte directoryNumber, byte fileNumber) {
@@ -95,6 +104,14 @@ void DFPlay::cycleEqualizer() {
 
 void DFPlay::setEqualizer(byte equalizerType) {
   exe_cmd(CMD_SET_EQ, 0, equalizerType);
+}
+
+void DFPlay::playAdvertise(int track) {
+    exe_cmd(CMD_PLAY_ADVERT, 0, track);
+}
+
+void DFPlay::stopAdvertise() {
+    exe_cmd(CMD_STOP_ADVERT, 0, 0);
 }
 
 void DFPlay::exe_cmd(byte CMD, byte Par1, byte Par2) {
@@ -399,8 +416,8 @@ void DFPlay::printDetail(uint8_t cmd, uint8_t param1, uint8_t param2) {
     case CMD_NORMAL_OPERATE:
       Serial.println(F("CMD_NORMAL_OPERATE"));
       break;
-    case CMD_RESET_MODULE:
-      Serial.println(F("CMD_RESET_MODULE"));
+    case CMD_RESET:
+      Serial.println(F("CMD_RESET"));
       break;
     case CMD_RESUME:
       Serial.println(F("CMD_RESUME"));
@@ -441,6 +458,13 @@ void DFPlay::printDetail(uint8_t cmd, uint8_t param1, uint8_t param2) {
       Serial.print(F("CMD_INIT: "));
       Serial.println(params);
       break;
+    case CMD_PLAY_ADVERT:
+      Serial.print(F("CMD_PLAY_ADVERT: "));
+      Serial.println(params);
+      break;
+    case CMD_STOP_ADVERT:
+      Serial.println(F("CMD_STOP_ADVERT: "));
+      break;
     case 0x40:
       Serial.print(F("Error: "));
       switch (params) {
@@ -463,7 +487,7 @@ void DFPlay::printDetail(uint8_t cmd, uint8_t param1, uint8_t param2) {
           Serial.println(F("Cannot Find File"));
           break;
         case Advertise:
-          Serial.println(F("In Advertise"));
+          Serial.println(F("Advertise"));
           break;
         default:
           // value

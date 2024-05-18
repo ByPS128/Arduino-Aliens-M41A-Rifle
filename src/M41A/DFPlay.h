@@ -26,12 +26,14 @@ private:
   static const byte CMD_PLAYBACK_SOURCE      = 0x09; // Nastavení režimu přehrávání - 0=U / 1=TF / 2=AUX / 3=Sleep / 4=Flash
   static const byte CMD_GO_STANDBY           = 0x0A; // Jdi spát, šetři energii
   static const byte CMD_NORMAL_OPERATE       = 0x0B; // Normal working ?
-  static const byte CMD_RESET_MODULE         = 0x0C; // Resetovat modul
+  static const byte CMD_RESET                = 0x0C; // Resetovat modul
   static const byte CMD_RESUME               = 0x0D; // Začít přehrávat
   static const byte CMD_PAUSE_PLAY           = 0x0E; // Pozastavit přehrávání
   static const byte CMD_SET_PLAY_FOLDER_FILE = 0x0F; // Nastavit složku k přehrávání - 1-10 (nutno nastavit uživatelem)
   static const byte CMD_VOLUME_ADJUST        = 0x10; // DH=0x01 - open volume adjust, DL=set volume gain 0-31 decimal
   static const byte CMD_REPEAT_PLAY          = 0x11; // 0=Stop repeat play / 1=Start repeat play
+  static const byte CMD_PLAY_ADVERT          = 0x13; // 
+  static const byte CMD_STOP_ADVERT          = 0x15; // 
   static const byte CMD_STOP                 = 0x16; // pause play
 
   static const byte CMD_MEDIUM_INSERTED      = 0x3A; // Medium inserted - 1=USB, 2=SD, 3=USB+SD
@@ -65,6 +67,9 @@ private:
   static const byte Acknowledge    = 0x00;
 
   static const byte DEFAULT_DIRECTORY_NUMBER = 1;
+
+  static const int DFPLAYER_RESET_TIME = 1000;
+  static const int DFPLAYER_INIT_TIME = 500;
 
 public:
   static const bool ACK_ENABLED  = true;
@@ -146,6 +151,8 @@ public:
   void update();
 
 public:
+  void reset();
+  void init();
   bool getPlaying();
   byte getVolume();
   void setVolume(byte newVolume);
@@ -156,6 +163,8 @@ public:
   void pause();
   void stop();
   void setEqualizer(byte equalizerType);
+  void playAdvertise(int track);
+  void stopAdvertise();
 
 private:
   void printDetail(uint8_t cmd, uint8_t param1, uint8_t param2);

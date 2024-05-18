@@ -16,6 +16,11 @@ void M41aPlayer::setup(byte newVolume)
 void M41aPlayer::update()
 {
   dfPlay.update();
+  if (explosionScheduled && millis() >= explosionTime) {
+    //dfPlay.playAdvertise(SAMPLE_GRANADE_EXPLOSION);
+    dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
+    explosionScheduled = false;
+  }
 }
 
 void M41aPlayer::stop()
@@ -60,8 +65,15 @@ void M41aPlayer::setEqualizer(byte equalizerType)
   dfPlay.setEqualizer(equalizerType);
 }
 
-void M41aPlayer::playFire(int bulletsCount)
+void M41aPlayer::resetGranadeExplositon()
 {
+  explosionTime = 0;
+  explosionScheduled = false;
+}
+
+void M41aPlayer::playRifleFire(int bulletsCount)
+{
+  resetGranadeExplositon();
   if (bulletsCount > 0)
   {
     int fileToPlay = lastFireInstrument;
@@ -111,6 +123,29 @@ void M41aPlayer::playEmptyMagazine()
   }
 
   dfPlay.play(fileToPlay);
+}
+
+void M41aPlayer::playGranadeLoad()
+{
+  explosionScheduled = false;  
+  //dfPlay.playAdvertise(SAMPLE_GRANADE_LOAD);
+  dfPlay.play(1, SAMPLE_GRANADE_LOAD);
+}
+
+void M41aPlayer::playGranadeFire()
+{
+  //dfPlay.playAdvertise(SAMPLE_GRANADE_FIRE);
+  dfPlay.play(1, SAMPLE_GRANADE_FIRE);
+  int delayTime = random(GRANADE_BALISTIC_DELAY_MIN, GRANADE_BALISTIC_DELAY_MAX);
+  explosionTime = millis() + delayTime;
+  explosionScheduled = true;  
+}
+
+void M41aPlayer::playGranadeExplosion()
+{
+  resetGranadeExplositon();
+  //dfPlay.playAdvertise(SAMPLE_GRANADE_EXPLOSION);
+  dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
 }
 
 void M41aPlayer::playClick()
