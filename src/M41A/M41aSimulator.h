@@ -18,7 +18,7 @@ private:
 
   const int rotaryS1_Pin = 9; // volume encoder
   const int rotaryS2_Pin = 10; // volume encoder
-  const int rotaryButton_Pin = A1; // rotary encoder button
+  const int rotaryButton_Pin = 8; // rotary encoder button
 
   const int led_Pin = A0; 
   const int ledGranade_Pin = 5; // must be PWM
