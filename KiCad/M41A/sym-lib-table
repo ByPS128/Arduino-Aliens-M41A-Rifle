@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Project_Library")(type "KiCad")(uri "C:/repo/github/ByPS/Arduiono/Arduino-Aliens-M41A-Riffle/KiCad/Project_Library.kicad_sym")(options "")(descr ""))
+)

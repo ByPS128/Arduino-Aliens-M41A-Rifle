@@ -4,3 +4,6 @@ KiCad/M41A/M41A-backups
 *.lck
 KiCad/M41A/fp-info-cache
 KiCad/M41A/#auto_saved_files#
+*.bak
+*-bak
+_autosave-*
