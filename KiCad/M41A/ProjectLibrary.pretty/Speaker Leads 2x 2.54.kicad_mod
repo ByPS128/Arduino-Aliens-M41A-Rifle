@@ -1,0 +1,174 @@
+(footprint "Speaker Leads 2x 2.54"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(descr "Test point with 2 pads, pitch 5.08mm, hole diameter 1.3mm, wire diameter 1.0mm")
+	(tags "CONN DEV")
+	(property "Reference" "SPKR"
+		(at 1.016 -2.54 0)
+		(layer "F.SilkS")
+		(uuid "bfe50ea0-545e-4650-8907-cf8b7013d2ed")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "Speaker 2x 2.54"
+		(at 1.524 2.794 0)
+		(layer "F.Fab")
+		(uuid "3d7829bc-07ce-4dd5-b362-865722262863")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "Speaker Leads 2x 2.54"
+		(at 2.54 6.858 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ac7d6647-d64a-4e93-be56-703ed09a6468")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d66aad3a-d32c-4a8b-a190-9d553308d56b")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(property "Description" "Speaker Leads"
+		(at 1.016 -4.572 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3c969ddf-59a1-4415-848d-7704ca64b7eb")
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+	)
+	(attr exclude_from_pos_files)
+	(fp_line
+		(start -1.5 -1.5)
+		(end -1.5 1.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "cac03a10-acb2-4aea-bf2a-86210d7cc85f")
+	)
+	(fp_line
+		(start -1.5 -1.5)
+		(end 3.561606 -1.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "3f4acee8-fd6f-4258-bbd5-3dbb223d56f9")
+	)
+	(fp_line
+		(start 3.561606 1.5)
+		(end -1.5 1.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "57dcfe30-3715-472e-86a9-7b12779f0161")
+	)
+	(fp_line
+		(start 3.561606 1.5)
+		(end 3.561606 -1.5)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c196edf0-b31a-428a-87ad-3001781d883e")
+	)
+	(fp_line
+		(start -1.8 -1.8)
+		(end -1.8 1.8)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "62504bbd-6a36-46d1-8944-ecf34fbbceac")
+	)
+	(fp_line
+		(start -1.8 -1.8)
+		(end 3.907795 -1.799989)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "0f03c740-6ed2-41fe-84f3-79cf656bb264")
+	)
+	(fp_line
+		(start 3.907795 1.800011)
+		(end -1.8 1.8)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "c2339887-e88f-4e25-a1f8-fe57c8609ed4")
+	)
+	(fp_line
+		(start 3.907795 1.800011)
+		(end 3.907795 -1.799989)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "fea25cfd-abec-45af-b0eb-8f19aefa22dc")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0.762 4.572 0)
+		(layer "F.Fab")
+		(uuid "e75b5e67-fe48-4d81-9f6c-1eae112c259c")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at -0.254 0)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "eb63feeb-a899-4457-b22d-de51adcb9862")
+	)
+	(pad "2" thru_hole circle
+		(at 2.286 0)
+		(size 2 2)
+		(drill 1)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "1765ad4d-b49e-433a-a310-2e81a3430041")
+	)
+)
