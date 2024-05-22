@@ -27,6 +27,13 @@ However, the software is easy to adapt for a larger application with multiple in
 * Required resistors, capacitor and shocky protection diode
 
 
+## Want see how it works?
+Here is short video of the project at bread board:
+
+(click to go to youtube and see the video - [youtu.be/FFHJ8ouhOAM](https://youtu.be/FFHJ8ouhOAM))
+
+[![Module in action](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/03dab6c4-cd19-43dc-bb2e-636f7de678b0)](https://youtu.be/FFHJ8ouhOAM)
+
 
 ## Schematic
 
