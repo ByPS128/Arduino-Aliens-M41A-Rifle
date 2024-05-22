@@ -28,7 +28,26 @@ However, the software is easy to adapt for a larger application with multiple in
 
 
 
-### DF Palyer
+## Schematic
+
+I developed the scheme in KiCad (free). It's my first schematic, so please excuse me if I didn't choose some brands correctly. Alternatively, please modify the scheme and make a pull request. The schematic source files are in the KiCad directory.
+
+https://www.kicad.org/
+
+Schema preview:
+
+
+
+Schema file resides here: /KiCad/M41A/M41A.kicad_sch
+
+and here is PDF version: /KiCad/M41A-Schematic.pdf
+
+If you would like to open the schema, import the libraries I created. I couldn't find schematic marks for some components, so I created them with their footprints.
+The library is in the directory: /KiCad/Project_Library.kicad_sym
+
+
+
+### DF Player
 
 I decided to use DF Player for playing sounds for several reasons:
 
