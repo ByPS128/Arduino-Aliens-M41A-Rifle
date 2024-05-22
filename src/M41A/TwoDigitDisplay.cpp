@@ -1,11 +1,11 @@
-#include "TwoSegmentDisplay.h"
+#include "TwoDigitDisplay.h"
 
-TwoSegmentDisplay::TwoSegmentDisplay()
+TwoDigitDisplay::TwoDigitDisplay()
   : latchPin(0), clockPin(0), dataPin(0), isAnodeDriven(false)
 {
 }
 
-void TwoSegmentDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isAnodeDriven)
+void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isAnodeDriven)
 {
   this->latchPin = latchPin;
   this->clockPin = clockPin;
@@ -24,17 +24,17 @@ void TwoSegmentDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool i
   #endif
 }
 
-void TwoSegmentDisplay::displayNumbers(int dozens, int units)
+void TwoDigitDisplay::displayNumbers(int dozens, int units)
 {
   displaySegments(numbers[dozens], numbers[units]);
 }
 
-void TwoSegmentDisplay::displaySegments(byte first, byte second)
+void TwoDigitDisplay::displaySegments(byte first, byte second)
 {
   // ST_CP LOW to keep LEDs from changing while reading serial data
   digitalWrite(latchPin, LOW);
 
-  // Použité segmenty mají společnou anodu, tedy segment svítí, pokud je jeho pin na hodnotě logická nula.
+  // The displays used shared anode, so the segment lights up when its pin is at logic zero.
   shiftOut(dataPin, clockPin, LSBFIRST, isAnodeDriven ? 255 - second : second);
   shiftOut(dataPin, clockPin, LSBFIRST, isAnodeDriven ? 255 - first : first);
 

@@ -18,7 +18,7 @@
      --------   x 1
 */
 
-class TwoSegmentDisplay {
+class TwoDigitDisplay {
 public:
   const byte N0     = 0b11111100;
   const byte N1     = 0b01100000;
@@ -44,7 +44,7 @@ private:
   bool isAnodeDriven;
 
 public:
-  TwoSegmentDisplay();
+  TwoDigitDisplay();
   void setup(byte latchPin, byte clockPin, byte dataPin, bool isAnodeDriven);
 
 public:

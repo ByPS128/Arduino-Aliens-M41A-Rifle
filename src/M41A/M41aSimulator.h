@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 #include "M41aPlayer.h"
-#include "TwoSegmentDisplay.h"
+#include "TwoDigitDisplay.h"
 #include "GranadeLedAnimator.h"
 
 
@@ -61,7 +61,7 @@ private:
 
 private:
   M41aPlayer player;
-  TwoSegmentDisplay display;
+  TwoDigitDisplay display;
   GranadeLedAnimator granadeLedAnimator;
   void (*afterPlaybackDelegate)() = nullptr;
 

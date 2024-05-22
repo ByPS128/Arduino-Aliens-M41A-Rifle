@@ -80,7 +80,7 @@ void M41aPlayer::playRifleFire(int bulletsCount)
     int stopper = 0;
     while (lastFireInstrument == fileToPlay && stopper++ < 3)
     {
-      fileToPlay = random(SAMPLE_FIRE_FIRST, SAMPLE_FIRE_LAST + 1);
+      fileToPlay = random(SAMPLE_RIFLE_FIRE_FIRST, SAMPLE_RIFLE_FIRE_LAST + 1);
     }
 
     dfPlay.play(fileToPlay);
