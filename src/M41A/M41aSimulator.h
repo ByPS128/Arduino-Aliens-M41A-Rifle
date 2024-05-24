@@ -68,6 +68,7 @@ public:
   void update();
 
 private:
+  static void onAnimationCompletecCallback(M41aSimulator* instance);
   static void rifleFireCallback(M41aSimulator* instance);
   static void rifleStopCallback(M41aSimulator* instance);
   static void cockCallback(M41aSimulator* instance);

@@ -60,7 +60,8 @@ void M41aSimulator::update()
 
   if ((displayAnimator.getCurrentAnimation() == CLOCKWISE_INIT || displayAnimator.getCurrentAnimation() == COUNTERCLOCKWISE_INIT) &&  displayAnimator.getElapsedTime() > 3000) {
     displayAnimator.stop();
-    displayAnimator.animateTransition(0, 95, 60);
+    bulletsCount = 0;
+    cock();
   }
 
   button1.update();
@@ -99,6 +100,11 @@ void M41aSimulator::update()
   processVolume();
 }
 
+
+void M41aSimulator::onAnimationCompletecCallback(M41aSimulator* instance)
+{
+  instance->cock();
+}
 
 void M41aSimulator::rifleFireCallback(M41aSimulator* instance)
 {
