@@ -5,6 +5,7 @@
 #include "TwoDigitDisplay.h"
 #include "RifleLedAnimator.h"
 #include "GranadeLedAnimator.h"
+#include "DisplayAnimator.h"
 #include "Button.h"
 #include "LongPressButton.h"
 
@@ -58,6 +59,7 @@ private:
   TwoDigitDisplay display;
   RifleLedAnimator rifleLedAnimator;
   GranadeLedAnimator granadeLedAnimator;
+  DisplayAnimator displayAnimator;
   void (*afterPlaybackDelegate)() = nullptr;
 
 public:

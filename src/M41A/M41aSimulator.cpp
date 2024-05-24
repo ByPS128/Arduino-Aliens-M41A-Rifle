@@ -28,6 +28,8 @@ void M41aSimulator::setup()
 
   rifleLedAnimator.setup(ledRiffle_Pin, FIRE_COUNTDOWN_INTERVAL, RIFLE_FIRE_FLASH_TIMEOUT);
   granadeLedAnimator.setup(ledGranade_Pin, GRANADE_FLASH_FADEOUT_TIME);
+  displayAnimator.setup(&display);
+  displayAnimator.animateClockwiseInit(50);
 
   button1.setup(button1_Pin, rifleFireCallback, rifleStopCallback, this);
   button2.setup(button2_Pin, magazineReloadCallback, nullptr, this);
@@ -54,6 +56,12 @@ void M41aSimulator::update()
   player.update();
   rifleLedAnimator.update();
   granadeLedAnimator.update();
+  displayAnimator.update();
+
+  if ((displayAnimator.getCurrentAnimation() == CLOCKWISE_INIT || displayAnimator.getCurrentAnimation() == COUNTERCLOCKWISE_INIT) &&  displayAnimator.getElapsedTime() > 3000) {
+    displayAnimator.stop();
+    displayAnimator.animateTransition(0, 95, 60);
+  }
 
   button1.update();
   button2.update();
@@ -174,9 +182,9 @@ void M41aSimulator::rifleStop()
 void M41aSimulator::cock()
 {
   player.playCock();
-  bulletsCount = MAX_BULETS_COUNT;
   rifleLedAnimator.stop();
-  displayBullets();
+  displayAnimator.animateTransition(bulletsCount, MAX_BULETS_COUNT, 60);
+  bulletsCount = MAX_BULETS_COUNT;
 }
 
 void M41aSimulator::magazineReload()
