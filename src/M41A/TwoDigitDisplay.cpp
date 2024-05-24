@@ -14,6 +14,11 @@ void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isA
   this->dataPin = dataPin;
   this->isAnodeDriven = isAnodeDriven;
 
+  // Initialize display pins to LOW before setting as outputs
+  digitalWrite(latchPin, LOW);
+  digitalWrite(clockPin, LOW);
+  digitalWrite(dataPin, LOW);
+  
   // Set up display pins as outputs
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);

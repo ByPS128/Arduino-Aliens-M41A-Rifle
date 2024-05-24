@@ -193,9 +193,9 @@ void M41aSimulator::cock()
 void M41aSimulator::magazineReload()
 {
   player.playMagazineReload();
-  bulletsCount = MAX_BULETS_COUNT;
   rifleLedAnimator.stop();
-  displayBullets();
+  displayAnimator.animateTransition(bulletsCount, MAX_BULETS_COUNT, 60);
+  bulletsCount = MAX_BULETS_COUNT;
 }
 
 void M41aSimulator::magazineEject()
