@@ -22,7 +22,6 @@ void M41aSimulator::setup()
   newVolume = epromVolume;
 
   display.setup(latch_Pin, clock_Pin, data_Pin, true);
-  display.displaySegments(display.NNone, display.NNone);
 
   randomSeed(millis());
 
@@ -44,8 +43,6 @@ void M41aSimulator::setup()
   #ifdef _DEDBUG
   Serial.println("M41A simulator ready");
   #endif
-
-  displayBullets();
 
   player.setup(epromVolume);
   player.setVolume(epromVolume);

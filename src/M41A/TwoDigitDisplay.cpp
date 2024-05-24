@@ -14,13 +14,13 @@ void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isA
   this->dataPin = dataPin;
   this->isAnodeDriven = isAnodeDriven;
 
-  displaySegments(NNone, NNone); // Initialize display to show nothing
-
   // Set up display pins as outputs
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
   
+  displaySegments(NNone, NNone); // Initialize display to show nothing
+
   #ifdef _DEBUG
   Serial.println("Display ready");
   #endif
