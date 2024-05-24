@@ -20,6 +20,7 @@
 
 class TwoDigitDisplay {
 public:
+  // Constants for segment codes for digits 0-9, minus sign, error, and blank
   const byte N0     = 0b11111100;
   const byte N1     = 0b01100000;
   const byte N2     = 0b11011010;
@@ -34,14 +35,15 @@ public:
   const byte NError = 0b10011110;
   const byte NNone  = 0b00000000;
   
+  // Array to map digits to segment codes
   const byte numbers[10] = {N0, N1, N2, N3, N4, N5, N6, N7, N8, N9};
 
 private:
-  // Define Connections to 74HC595
-  byte latchPin;  //74HC595 RCLK  pin 12 ST_CP (LAOD) - zelený 
-  byte clockPin;  //74HC595 SRCLK pin 11 SH_CP (SCLK) - žlutý
-  byte dataPin;   //74HC595 SER   pin 14 DS    (SDD)  - modrý
-  bool isAnodeDriven;
+  // Define connections to 74HC595 shift register
+  byte latchPin;  // 74HC595 RCLK   ST_CP (LOAD)
+  byte clockPin;  // 74HC595 SRCLK  SH_CP (SCLK)
+  byte dataPin;   // 74HC595 SER    DS    (DATA)
+  bool isAnodeDriven; // Flag to indicate if display is common anode or common cathode
 
 public:
   TwoDigitDisplay();

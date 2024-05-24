@@ -1,36 +1,42 @@
 #include "GranadeLedAnimator.h"
 
+// Set up the grenade LED animator with the specified pin and fade-out time
 void GranadeLedAnimator::setup(int granadePwmLedPin, int timeToFullFadeOutInMs) {
     ledPin = granadePwmLedPin;
     fadeOutTime = timeToFullFadeOutInMs;
     pinMode(ledPin, OUTPUT);
-    ledOff();
+    ledOff();  // Ensure the LED is off initially
 }
 
+// Start the grenade LED animation
 void GranadeLedAnimator::ledAnimationStart() {
-    startTime = millis();
-    isAnimating = true;
-    update();
+    startTime = millis();  // Record the start time of the animation
+    isAnimating = true;    // Set the animation flag to true
+    update();              // Immediately update the LED state
 }
 
+// Update the grenade LED animation
 void GranadeLedAnimator::update() {
     if (!isAnimating) {
-      ledOff();
-      return;
+        ledOff();  // If not animating, ensure the LED is off
+        return;
     }
 
     unsigned long currentTime = millis();
-    unsigned long elapsedTime = currentTime - startTime;
+    unsigned long elapsedTime = currentTime - startTime;  // Calculate elapsed time since the start
 
+    // If the animation is still within the fade-out time
     if (elapsedTime < fadeOutTime) {
+        // Calculate brightness based on elapsed time
         int brightness = 255 - (255 * elapsedTime / fadeOutTime);
-        analogWrite(ledPin, brightness);
+        analogWrite(ledPin, brightness);  // Set LED brightness
     } else {
-        ledOff();
+        ledOff();  // Turn off the LED if the fade-out time has elapsed
     }
 }
 
+// Turn off the grenade LED
 void GranadeLedAnimator::ledOff() {
-    isAnimating = false;
-    analogWrite(ledPin, 0);
+    isAnimating = false;  // Set the animation flag to false
+    analogWrite(ledPin, 0);  // Set LED brightness to 0 (off)
 }

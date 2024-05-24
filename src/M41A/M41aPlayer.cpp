@@ -1,190 +1,179 @@
 #include "M41aPlayer.h"
 
-M41aPlayer::M41aPlayer()
-{
+// Constructor for M41aPlayer
+M41aPlayer::M41aPlayer() {
 }
 
-void M41aPlayer::setup(byte newVolume)
-{
+// Setup the M41aPlayer with the specified volume
+void M41aPlayer::setup(byte newVolume) {
   dfPlay.setup(newVolume, dfPlay.ACK_DISABLED);
 
-  #ifdef _DEBUG
+#ifdef _DEBUG
   Serial.println("M41A player ready");
-  #endif
+#endif
 }
 
-void M41aPlayer::update()
-{
+// Update the state of the M41aPlayer, handle scheduled explosions
+void M41aPlayer::update() {
   dfPlay.update();
   if (explosionScheduled && millis() >= explosionTime) {
-    //dfPlay.playAdvertise(SAMPLE_GRANADE_EXPLOSION);
     dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
     explosionScheduled = false;
   }
 }
 
-void M41aPlayer::stop()
-{
+// Stop the player
+void M41aPlayer::stop() {
   dfPlay.stop();
 }
 
-bool M41aPlayer::getPlaying()
-{
+// Check if the player is currently playing
+bool M41aPlayer::getPlaying() {
   return dfPlay.getPlaying();
 }
 
-byte M41aPlayer::getVolume()
-{
+// Get the current volume
+byte M41aPlayer::getVolume() {
   return dfPlay.getVolume();
 }
 
-void M41aPlayer::setVolume(byte newVolume)
-{
+// Set a new volume
+void M41aPlayer::setVolume(byte newVolume) {
   dfPlay.setVolume(newVolume);
 }
 
-void M41aPlayer::volumeIncrement()
-{
+// Increase the volume by one step and play a click sound
+void M41aPlayer::volumeIncrement() {
   dfPlay.volumeIncrement();
   playClick();
 }
 
-void M41aPlayer::volumeDecrement()
-{
+// Decrease the volume by one step and play a click sound
+void M41aPlayer::volumeDecrement() {
   dfPlay.volumeDecrement();
   playClick();
 }
 
-void M41aPlayer::setEqualizer(byte equalizerType)
-{
+// Set the equalizer to a specific type
+void M41aPlayer::setEqualizer(byte equalizerType) {
   dfPlay.setEqualizer(equalizerType);
 }
 
-void M41aPlayer::resetGranadeExplositon()
-{
+// Reset the grenade explosion scheduling
+void M41aPlayer::resetGranadeExplositon() {
   explosionTime = 0;
   explosionScheduled = false;
 }
 
-void M41aPlayer::playRifleFire(int bulletsCount)
-{
+// Play a rifle fire sound based on the number of bullets remaining
+void M41aPlayer::playRifleFire(int bulletsCount) {
   resetGranadeExplositon();
-  if (bulletsCount > 0)
-  {
+  if (bulletsCount > 0) {
     int fileToPlay = lastFireInstrument;
     int stopper = 0;
-    while (lastFireInstrument == fileToPlay && stopper++ < 3)
-    {
+    while (lastFireInstrument == fileToPlay && stopper++ < 3) {
       fileToPlay = random(SAMPLE_RIFLE_FIRE_FIRST, SAMPLE_RIFLE_FIRE_LAST + 1);
     }
-
     dfPlay.play(fileToPlay);
   } else {
     playEmptyMagazine();
   }
 }
 
-void M41aPlayer::playCock()
-{
+// Play a cocking sound
+void M41aPlayer::playCock() {
   int fileToPlay = random(SAMPLE_COCK_FIRST, SAMPLE_COCK_LAST + 1);
   dfPlay.play(fileToPlay);
 }
 
-void M41aPlayer::playMagazineReload()
-{
+// Play a magazine reload sound
+void M41aPlayer::playMagazineReload() {
   int fileToPlay = random(SAMPLE_MAGAZINE_RELOAD_FIRST, SAMPLE_MAGAZINE_RELOAD_LAST + 1);
   dfPlay.play(fileToPlay);
 }
 
-void M41aPlayer::playMagazineEject()
-{
+// Play a magazine eject sound
+void M41aPlayer::playMagazineEject() {
   int fileToPlay = random(SAMPLE_MAGAZINE_EJECT_FIRST, SAMPLE_MAGAZINE_EJECT_LAST + 1);
   dfPlay.play(fileToPlay);
 }
 
-void M41aPlayer::playMagazineLoad()
-{
+// Play a magazine load sound
+void M41aPlayer::playMagazineLoad() {
   int fileToPlay = random(SAMPLE_MAGAZINE_LOAD_FIRST, SAMPLE_MAGAZINE_LOAD_LAST + 1);
   dfPlay.play(fileToPlay);
 }
 
-void M41aPlayer::playEmptyMagazine()
-{
+// Play an empty magazine sound
+void M41aPlayer::playEmptyMagazine() {
   int fileToPlay = lastEmptyMagazineInstrument;
   int stopper = 0;
-  while (lastEmptyMagazineInstrument == fileToPlay && stopper++ < 3)
-  {
+  while (lastEmptyMagazineInstrument == fileToPlay && stopper++ < 3) {
     fileToPlay = random(SAMPLE_EMPTY_MAGAZINE_FIRST, SAMPLE_EMPTY_MAGAZINE_LAST + 1);
   }
-
   dfPlay.play(fileToPlay);
 }
 
-void M41aPlayer::playGranadeLoad()
-{
+// Play a grenade load sound
+void M41aPlayer::playGranadeLoad() {
   explosionScheduled = false;  
-  //dfPlay.playAdvertise(SAMPLE_GRANADE_LOAD);
   dfPlay.play(1, SAMPLE_GRANADE_LOAD);
 }
 
-void M41aPlayer::playGranadeFire()
-{
-  //dfPlay.playAdvertise(SAMPLE_GRANADE_FIRE);
+// Play a grenade fire sound and schedule an explosion
+void M41aPlayer::playGranadeFire() {
   dfPlay.play(1, SAMPLE_GRANADE_FIRE);
   int delayTime = random(GRANADE_BALISTIC_DELAY_MIN, GRANADE_BALISTIC_DELAY_MAX);
   explosionTime = millis() + delayTime;
   explosionScheduled = true;  
 }
 
-void M41aPlayer::playGranadeExplosion()
-{
+// Play a grenade explosion sound
+void M41aPlayer::playGranadeExplosion() {
   resetGranadeExplositon();
-  //dfPlay.playAdvertise(SAMPLE_GRANADE_EXPLOSION);
   dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
 }
 
-void M41aPlayer::playClick()
-{
+// Play a click sound
+void M41aPlayer::playClick() {
   return;
-
   if (dfPlay.getPlaying()) {
     return;
   }
-
   dfPlay.play(SAMPLE_CLICK);
 }
 
-void M41aPlayer::playVolumeSaved()
-{
+// Play a volume saved sound
+void M41aPlayer::playVolumeSaved() {
   dfPlay.play(SAMPLE_VOLUME_SAVED);
 }
 
-void M41aPlayer::playVolumeUp()
-{
+// Play a volume up sound
+void M41aPlayer::playVolumeUp() {
   dfPlay.play(SAMPLE_VOLUME_UP);
 }
 
-void M41aPlayer::playVolumeDown()
-{
+// Play a volume down sound
+void M41aPlayer::playVolumeDown() {
   dfPlay.play(SAMPLE_VOLUME_DOWN);
 }
 
-void M41aPlayer::playCardInserted()
-{
+// Play a card inserted sound
+void M41aPlayer::playCardInserted() {
   dfPlay.play(SAMPLE_CARD_INSERTED);
 }
 
-void M41aPlayer::playCardRemoved()
-{
+// Play a card removed sound
+void M41aPlayer::playCardRemoved() {
   dfPlay.play(SAMPLE_CARD_REMOVED);
 }
 
-void M41aPlayer::playLowBattery()
-{
+// Play a low battery sound
+void M41aPlayer::playLowBattery() {
   dfPlay.play(SAMPLE_LOW_BATTERY);
 }
 
-void M41aPlayer::playWeaponReady()
-{
+// Play a weapon ready sound
+void M41aPlayer::playWeaponReady() {
   dfPlay.play(SAMPLE_WEAPON_READY);
 }

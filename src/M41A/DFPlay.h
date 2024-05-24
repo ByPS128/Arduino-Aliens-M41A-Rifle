@@ -6,7 +6,6 @@
 
 //#define _DEBUG
 
-
 class DFPlay {
 private:
   /*
@@ -15,48 +14,48 @@ private:
   */
 
   // Commands :
-  static const byte CMD_NEXT_SONG            = 0x01; // Příkaz pro přeskočení na další skladbu
-  static const byte CMD_PREV_SONG            = 0x02; // Příkaz pro návrat na předchozí skladbu
-  static const byte CMD_SPECIFY_TRACK        = 0x03; // Nastavení čísla skldaby - 0 .. 2999
-  static const byte CMD_VOLUME_UP            = 0x04; // Zvýšení hlasitosti
-  static const byte CMD_VOLUME_DOWN          = 0x05; // Snížení hlasitosti
-  static const byte CMD_SET_VOLUME           = 0x06; // Nastavení hlasitosti - 0-30
-  static const byte CMD_SET_EQ               = 0x07; // Nastavení ekvalizéru - 0=Normal / 1=Pop / 2=Rock / 3=Jazz / 4=Classic / 5=Base
-  static const byte CMD_SET_PLAYBACK_MODE    = 0x08; // Zapnutí opakování přehrání - 0=file / 1=folder / 2=single / 3=random
-  static const byte CMD_PLAYBACK_SOURCE      = 0x09; // Nastavení režimu přehrávání - 0=U / 1=TF / 2=AUX / 3=Sleep / 4=Flash
-  static const byte CMD_GO_STANDBY           = 0x0A; // Jdi spát, šetři energii
-  static const byte CMD_NORMAL_OPERATE       = 0x0B; // Normal working ?
-  static const byte CMD_RESET                = 0x0C; // Resetovat modul
-  static const byte CMD_RESUME               = 0x0D; // Začít přehrávat
-  static const byte CMD_PAUSE_PLAY           = 0x0E; // Pozastavit přehrávání
-  static const byte CMD_SET_PLAY_FOLDER_FILE = 0x0F; // Nastavit složku k přehrávání - 1-10 (nutno nastavit uživatelem)
+  static const byte CMD_NEXT_SONG            = 0x01; // Command to skip to the next song
+  static const byte CMD_PREV_SONG            = 0x02; // Command to return to the previous song
+  static const byte CMD_SPECIFY_TRACK        = 0x03; // Set the track number - 0 .. 2999
+  static const byte CMD_VOLUME_UP            = 0x04; // Increase volume
+  static const byte CMD_VOLUME_DOWN          = 0x05; // Decrease volume
+  static const byte CMD_SET_VOLUME           = 0x06; // Set volume - 0-30
+  static const byte CMD_SET_EQ               = 0x07; // Set equalizer - 0=Normal / 1=Pop / 2=Rock / 3=Jazz / 4=Classic / 5=Bass
+  static const byte CMD_SET_PLAYBACK_MODE    = 0x08; // Enable repeat playback - 0=file / 1=folder / 2=single / 3=random
+  static const byte CMD_PLAYBACK_SOURCE      = 0x09; // Set playback mode - 0=U / 1=TF / 2=AUX / 3=Sleep / 4=Flash
+  static const byte CMD_GO_STANDBY           = 0x0A; // Go to sleep, save energy
+  static const byte CMD_NORMAL_OPERATE       = 0x0B; // Normal working?
+  static const byte CMD_RESET                = 0x0C; // Reset module
+  static const byte CMD_RESUME               = 0x0D; // Start playing
+  static const byte CMD_PAUSE_PLAY           = 0x0E; // Pause playback
+  static const byte CMD_SET_PLAY_FOLDER_FILE = 0x0F; // Set folder to play - 1-10 (must be set by user)
   static const byte CMD_VOLUME_ADJUST        = 0x10; // DH=0x01 - open volume adjust, DL=set volume gain 0-31 decimal
   static const byte CMD_REPEAT_PLAY          = 0x11; // 0=Stop repeat play / 1=Start repeat play
-  static const byte CMD_PLAY_ADVERT          = 0x13; // 
-  static const byte CMD_STOP_ADVERT          = 0x15; // 
-  static const byte CMD_STOP                 = 0x16; // pause play
+  static const byte CMD_PLAY_ADVERT          = 0x13; // Play advertisement
+  static const byte CMD_STOP_ADVERT          = 0x15; // Stop advertisement
+  static const byte CMD_STOP                 = 0x16; // Stop playback
 
   static const byte CMD_MEDIUM_INSERTED      = 0x3A; // Medium inserted - 1=USB, 2=SD, 3=USB+SD
   static const byte CMD_MEDIUM_REMOVED       = 0x3B; // Medium removed - 1=USB, 2=SD, 3=USB+SD
   static const byte CMD_PLAYBACk_FINISHED1   = 0x3C; // Playback finished
   static const byte CMD_PLAYBACk_FINISHED2   = 0x3D; // Playback finished
   static const byte CMD_UNKNOWN1             = 0x3E; // ?
-  static const byte CMD_INIT                 = 0x3F; // Send init params 0x0F (každý bit reprezentuje jedno zařízení - spodní 4 bity)
+  static const byte CMD_INIT                 = 0x3F; // Send init params 0x0F (each bit represents one device - lower 4 bits)
 
-  static const byte CMD_ERROR                = 0x40; // Vrátí chybu, vyžádá opakování
+  static const byte CMD_ERROR                = 0x40; // Returns error, requests repetition
   static const byte CMD_ACK                  = 0x41; // ACK
-  static const byte CMD_STATUS               = 0x42; // Dotaz na aktuální stav
-  static const byte CMD_VOLUME               = 0x43; // Dotaz na aktuální hlasitost
-  static const byte CMD_EQ                   = 0x44; // Dotaz na aktuální ekvalizér
-  static const byte CMD_PLAYBACK_MODE        = 0x45; // Dotaz na aktuální režim přehrávání
-  static const byte CMD_SOFTWARE_VERSION     = 0x46; // Dotaz na aktuální verzi software
-  static const byte CMD_TF_CARD_FILES        = 0x47; // Dotaz na celkový počet souborů na TF kartě
-  static const byte CMD_UDISK_FILES          = 0x48; // Dotaz na celkový počet souborů na U disku
-  static const byte CMD_FLASH_FILES          = 0x49; // Dotaz na celkový počet souborů ve flash paměti
-  static const byte CMD_KEEP_ON              = 0x4A; // Ponechat zapnuté
-  static const byte CMD_TF_CARD_TRACK        = 0x4B; // Dotaz na aktuální skladbu na TF kartě
-  static const byte CMD_UDISK_TRACK          = 0x4C; // Dotaz na aktuální skladbu na U disku
-  static const byte CMD_FLASH_TRACK          = 0x4D; // Dotaz na aktuální skladbu ve flash paměti
+  static const byte CMD_STATUS               = 0x42; // Query current status
+  static const byte CMD_VOLUME               = 0x43; // Query current volume
+  static const byte CMD_EQ                   = 0x44; // Query current equalizer
+  static const byte CMD_PLAYBACK_MODE        = 0x45; // Query current playback mode
+  static const byte CMD_SOFTWARE_VERSION     = 0x46; // Query current software version
+  static const byte CMD_TF_CARD_FILES        = 0x47; // Query total number of files on TF card
+  static const byte CMD_UDISK_FILES          = 0x48; // Query total number of files on U disk
+  static const byte CMD_FLASH_FILES          = 0x49; // Query total number of files in flash memory
+  static const byte CMD_KEEP_ON              = 0x4A; // Keep on
+  static const byte CMD_TF_CARD_TRACK        = 0x4B; // Query current track on TF card
+  static const byte CMD_UDISK_TRACK          = 0x4C; // Query current track on U disk
+  static const byte CMD_FLASH_TRACK          = 0x4D; // Query current track in flash memory
   static const byte CMD_UNKNOWN2             = 0x4E; // ?
   static const byte CMD_UNKNOWN3             = 0x4F; // ?
 
@@ -125,7 +124,7 @@ private:
   #define Advertise 7
 
 private:
-  SoftwareSerial mySerial;
+  SoftwareSerial mySerial;  // SoftwareSerial object for communication with DFPlayer Mini
 
 private:
   unsigned long _timeOutDuration = 500;
@@ -139,9 +138,9 @@ private:
   bool _isAvailable;
   bool _isSending;
   int eqset;
-  uint32_t lastSubmitMillis; // Globální proměnná pro sledování času posledního odeslání příkazu
+  uint32_t lastSubmitMillis; // Global variable to track the last command submission time
   boolean playing = false;
-  
+
 private:
   volatile int volume = 20;
 
@@ -149,8 +148,6 @@ public:
   DFPlay();
   void setup(byte newVolume, bool enableAck);
   void update();
-
-public:
   void reset();
   void init();
   bool getPlaying();
@@ -179,7 +176,7 @@ private:
   void enableACK();
   void disableACK();
   uint16_t calculateCheckSum(byte *buffer);
-  void initMe();
   void cycleEqualizer();
   void exe_cmd(byte CMD, byte Par1, byte Par2);
 };
+

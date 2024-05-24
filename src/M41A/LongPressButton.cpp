@@ -22,20 +22,20 @@ void LongPressButton::update() {
     if (currentState != lastState) {
         pressed = currentState == LOW;
         if (pressed) {
-            buttonPressTime = millis(); // Uložení času stisku
-            isPressHandled = false; // Resetování flagu pro zpracování akce
-        } else { // Talčítko bylo uvolněno
+            buttonPressTime = millis(); // Saving the button press time
+            isPressHandled = false; // Reset flag for action processing
+        } else { // The pusher has been released
             if (!isPressHandled &&onShortPress) {
-              isPressHandled = true; // Nastavení flagu, že akce byla zpracována
-              onShortPress(context);// Kontrola, zda nebyla akce již zpracována
+              isPressHandled = true; // Setting the flag that the action has been processed
+              onShortPress(context);// Checking if the action has not already been processed
             }
         }
         lastState = currentState;
     } else if (currentState == LOW && !isPressHandled) {
-        // Kontrola, zda doba stisku přesáhla limit pro dlouhý stisk
+        // Checking if the press time has exceeded the long press limit
         if (millis() - buttonPressTime >= longPressTime && onLongPress) {
-            isPressHandled = true; // Nastavení flagu, že akce byla zpracována
-            onLongPress(context); // Zpracování dlouhého stisku
+            isPressHandled = true; // Setting the flag that the action has been processed
+            onLongPress(context); // Long press processing
         }
     }
 }

@@ -1,10 +1,12 @@
 #include "TwoDigitDisplay.h"
 
+// Constructor for TwoDigitDisplay, initializes member variables
 TwoDigitDisplay::TwoDigitDisplay()
   : latchPin(0), clockPin(0), dataPin(0), isAnodeDriven(false)
 {
 }
 
+// Set up the display with the specified pins and anode/cathode type
 void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isAnodeDriven)
 {
   this->latchPin = latchPin;
@@ -12,9 +14,9 @@ void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isA
   this->dataPin = dataPin;
   this->isAnodeDriven = isAnodeDriven;
 
-  displaySegments(NNone, NNone);
+  displaySegments(NNone, NNone); // Initialize display to show nothing
 
-  // Setup display pins as Outputs
+  // Set up display pins as outputs
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
@@ -24,17 +26,20 @@ void TwoDigitDisplay::setup(byte latchPin, byte clockPin, byte dataPin, bool isA
   #endif
 }
 
+// Display numbers on the two-digit display
 void TwoDigitDisplay::displayNumbers(int dozens, int units)
 {
   displaySegments(numbers[dozens], numbers[units]);
 }
 
+// Display specific segments on the two-digit display
 void TwoDigitDisplay::displaySegments(byte first, byte second)
 {
-  // ST_CP LOW to keep LEDs from changing while reading serial data
+  // Set latch pin to LOW to prepare for data shifting
   digitalWrite(latchPin, LOW);
 
-  // The displays used shared anode, so the segment lights up when its pin is at logic zero.
+  // Shift out the data for the second and first digit
+  // Adjust for common anode/cathode configuration
   shiftOut(dataPin, clockPin, LSBFIRST, isAnodeDriven ? 255 - second : second);
   shiftOut(dataPin, clockPin, LSBFIRST, isAnodeDriven ? 255 - first : first);
 
@@ -45,6 +50,6 @@ void TwoDigitDisplay::displaySegments(byte first, byte second)
   Serial.println(second, BIN);
   #endif
 
-  // ST_CP HIGH change LEDs
+  // Set latch pin to HIGH to display the shifted data
   digitalWrite(latchPin, HIGH);
 }
