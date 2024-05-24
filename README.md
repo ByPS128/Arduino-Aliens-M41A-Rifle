@@ -27,6 +27,13 @@ However, the software is easy to adapt for a larger application with multiple in
 * Required resistors, capacitor and shocky protection diode
 
 
+## Want see how it works?
+Here is short video of the project at bread board:
+
+(click to go to youtube and see the video - [youtu.be/FFHJ8ouhOAM](https://youtu.be/FFHJ8ouhOAM))
+
+[![Module in action](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/03dab6c4-cd19-43dc-bb2e-636f7de678b0)](https://youtu.be/FFHJ8ouhOAM)
+
 
 ## Schematic
 
@@ -35,6 +42,7 @@ I developed the scheme in KiCad (free). It's my first schematic, so please excus
 https://www.kicad.org/
 
 Schema preview:
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/13576aa5-1da5-4455-ac9a-ee9ec9e9f863)
 
 
 
@@ -77,6 +85,7 @@ If you wanted to use a more powerful speaker, you would have to insert another a
 For displaying the remaining bullets in the rifle's magazine, I used, how else, red segment displays. And to get rid of a bunch of wires and resistors, I used a driver that is beautifully compact, works perfectly.
 It contains a 74HC595 circuit for each segment. The displays used shared anode, so the segment lights up when its pin is at logic zero.
 
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/55897864-5b80-427a-af15-5248282f9abf)
 
 https://www.aliexpress.us/item/3256805033000283.html
 
@@ -87,6 +96,7 @@ https://www.aliexpress.us/item/3256805033000283.html
 I used this one, with built-in RC filter. Thanks to the filter, the dream was not to treat false presses.
 
 
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/2817dcaf-b964-4e1f-b54f-7054b6951d9c)
 
 https://www.aliexpress.us/item/3256805548024336.html
 
