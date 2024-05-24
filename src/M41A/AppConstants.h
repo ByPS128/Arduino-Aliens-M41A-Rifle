@@ -12,12 +12,14 @@ static const int INIT_FLAG_ADDRESS = 9;  // Address for depositing the control f
 static const byte INITIALIZED_FLAG = 0xA5;  // Some specific value for checking initialization, typically greater than MAX_VOLUME, to indicate that the volume has not yet been stored.
 static const byte DEFAULT_VOLUME_VALUE = 20;
 
+static const int MAX_BULETS_COUNT = 95; // Count of bulets in full magazine
+
 // after how long it takes to substract one bullet from the magazine.
 // My sound files for rifle shoot takes 8.5-9 seconds, so tis is the calculation of substraction interval:
 // 90ms * 95 bullets = 8550ms = 8.55s
 static const int FIRE_COUNTDOWN_INTERVAL = 90; 
 
-static const int LED_BLINK_INTERVAL = 45; // After what time does the LED state (on/off) switch to mimic flashes.
+static const int RIFLE_FIRE_FLASH_TIMEOUT = 60; // After what time does the LED state (on/off) switch to mimic flashes.
 
 // I have some sounds in multiple variants and I randomly choose which variant to play.
 // For this there are FIRST and LAST containers, which define the file numbers of the sounds of a given type.

@@ -9,8 +9,8 @@ private:
   DFPlay dfPlay;
   int lastFireInstrument;
   int lastEmptyMagazineInstrument;
-  unsigned long explosionTime = 0; // Čas pro náhodnou explozi
-  bool explosionScheduled = false; // Zda je exploze naplánovaná
+  unsigned long explosionTime = 0; // Randomly calculated time in milliveterin for how long it takes for the grenade to explode
+  bool explosionScheduled = false; // Flag if the explosion is planned (if the grenade was fired)
 
 private:
   volatile int volume = 20;
@@ -26,7 +26,6 @@ public:
   void setVolume(byte newVolume);
   void volumeIncrement();
   void volumeDecrement();
-  void pause();
   void stop();
   void setEqualizer(byte equalizerType);
 

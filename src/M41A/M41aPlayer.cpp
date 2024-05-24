@@ -28,11 +28,6 @@ void M41aPlayer::stop()
   dfPlay.stop();
 }
 
-void M41aPlayer::pause()
-{
-  dfPlay.pause();
-}
-
 bool M41aPlayer::getPlaying()
 {
   return dfPlay.getPlaying();
