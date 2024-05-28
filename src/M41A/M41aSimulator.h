@@ -28,7 +28,7 @@ private:
   const int ledGranade_Pin = 5; // Led of granade barrel, must be PWM because of animation
   
   // Define Connections to 74HC595
-  const int latch_Pin = 12;  //74HC595 RCLK   ST_CP (LAOD)
+  const int latch_Pin = 12;  //74HC595 RCLK   ST_CP (LOAD)
   const int clock_Pin = 11;  //74HC595 SRCLK  SH_CP (SCLK)
   const int data_Pin = 13;   //74HC595 SER    DS    (SDD) 
 
