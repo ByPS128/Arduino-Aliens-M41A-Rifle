@@ -42,7 +42,54 @@ I developed the scheme in KiCad (free). It's my first schematic, so please excus
 https://www.kicad.org/
 
 Schema preview:
-![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/13576aa5-1da5-4455-ac9a-ee9ec9e9f863)
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/358185b6-503f-456e-9be2-1b59e0d10f03)
+
+
+## Schama descriptions about condensators used as filter of peaks and noise:
+To prevent the display from flickering after switching on the circuit, or even a flicker in the speaker, I recommend using an electrolytic and ceramic capacitor in parallel. Each type has different characteristics and they complement each other:
+
+* 100 µF electrolytic capacitor: This capacitor is able to smooth out low frequency peaks and provide a stable power supply. Electrolytic capacitors have high capacitance and are suitable for low frequency filtering.
+
+* 100 nF ceramic capacitor: This capacitor is capable of smoothing out high frequency peaks and noise. Ceramic capacitors have lower capacitance but are faster and more efficient for filtering high frequencies.
+
+### So you should use both types of capacitors in parallel:
+* Electrolytic capacitor **C1** (100 µF) between VCC and GND.
+* Ceramic capacitor **C2** (100 nF) between VCC and GND.
+
+### The order of the capacitors in the direction from source to consumer matters:
+1. Ceramic capacitor (100 nF): this capacitor should be as close as possible to the power pins of the components (i.e. to the consumers). Ceramic capacitors are able to quickly filter out high frequency noise, which is useful for removing fast changes and interference.
+2. electrolytic capacitor (100 µF). Electrolytic capacitors have higher capacitance and are able to smooth out low frequency peaks and stabilize the power supply.
+
+
+## Estimation of current consumption
+### Components:
+* Arduino Nano: approximately 50 mA
+* DFPlayer Mini: approximately 150-250 mA (without speaker)
+* Speaker: up to 600 mA (at maximum power)
+* Display with 74HC595: approximately 50-100 mA
+* Other components (LEDs, switches, etc.): approx. 20-50 mA
+
+### Total estimated current consumption
+Approximately 870-1050 mA (considering all components at maximum power)
+
+Calculation of capacitor capacitance required
+It is common practice for filter capacitors to use 100-200 µF for every 100 mA of current draw.
+
+Electrolytic capacitor **C3**
+Required capacitance: (1050 mA / 100 mA) * 100-200 µF = 1050-2100 µF
+Ceramic capacitor **C4**
+Capacitance required: 100 nF to 1 µF (for high frequency noise)
+
+### Recommended capacitances for capacitor.
+
+#### C3 (electrolytic capacitor)
+Recommended capacitance: 1000 µF to 2200 µF
+This value will provide sufficient power supply filtering for all components.
+
+#### C4 (ceramic capacitor)
+Recommended capacitance: 100 nF to 1 µF
+This value will help with high frequency noise filtering.
+
 
 
 
