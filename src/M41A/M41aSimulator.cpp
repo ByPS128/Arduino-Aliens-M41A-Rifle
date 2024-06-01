@@ -4,9 +4,8 @@
 #include "AppConstants.h"
 
 M41aSimulator::M41aSimulator() :
-    oldRotaryMasterValue(1), bulletsCount(95), newVolume(20), volumeDisplayed(false), 
-    fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false), isVolumeEpromWriteFlag(false), 
-    isGranadeLoaded(false)
+    oldRotaryMasterValue(1), newVolume(20), volumeDisplayed(false),
+    fireMillis(0), ledBlinkMillis(0), weaponReadyPlayed(false), isVolumeEpromWriteFlag(false)
 {
 }
 
@@ -21,24 +20,24 @@ void M41aSimulator::setup()
   byte epromVolume = readVolumeFromEprom();
   newVolume = epromVolume;
 
-  display.setup(latch_Pin, clock_Pin, data_Pin, true);
+  display.setup(LATCH_PIN, CLOCK_PIN, DATA_PIN, true);
 
   randomSeed(millis());
 
-  rifleLedAnimator.setup(ledRiffle_Pin, FIRE_COUNTDOWN_INTERVAL, RIFLE_FIRE_FLASH_TIMEOUT);
-  granadeLedAnimator.setup(ledGranade_Pin, GRANADE_FLASH_FADEOUT_TIME);
+  rifleLedAnimator.setup(LED_RIFLE_PIN, FIRE_COUNTDOWN_INTERVAL, RIFLE_FIRE_FLASH_TIMEOUT);
+  grenadeLedAnimator.setup(LED_GRENADE_PIN, GRENADE_FLASH_FADEOUT_TIME);
   displayAnimator.setup(&display);
-  displayAnimator.animateClockwiseInit(50);
+  displayAnimator.animateClockwiseLoading(50);
 
-  button1.setup(button1_Pin, rifleFireCallback, rifleStopCallback, this);
-  button2.setup(button2_Pin, magazineReloadCallback, nullptr, this);
-  button3.setup(button3_Pin, cockCallback, nullptr, this);
-  button4.setup(button4_Pin, grandeFireCallback, nullptr, this);
-  rotaryButton.setup(rotaryButton_Pin, LONG_PRESS_TIME, volumeButtonShortPressCallback, volumeButtonLongPressCallback, this);
+  rifleTriggerButton.setup(RIFLE_TRIGGER_PIN, rifleFireCallback, rifleStopCallback, this);
+  magazineReloadButton.setup(MAGAZINE_RELOAD_PIN, magazineReloadCallback, nullptr, this);
+  rifleCockButton.setup(RIFLE_COCK_PIN, rifleCockCallback, nullptr, this);
+  grenadeTriggerButton.setup(GRENADE_TRIGGER_PIN, grenadeFireCallback, nullptr, this);
+  rotaryButton.setup(ROTARY_BUTTON_PIN, LONG_PRESS_TIME, volumeButtonShortPressCallback, volumeButtonLongPressCallback, this);
 
-  pinMode(rotaryS1_Pin, INPUT);
-  pinMode(rotaryS2_Pin, INPUT);
-  pinMode(rotaryButton_Pin, INPUT);
+  pinMode(ROTARY_S1_PIN, INPUT);
+  pinMode(ROTARY_S2_PIN, INPUT);
+  pinMode(ROTARY_BUTTON_PIN, INPUT);
 
   #ifdef _DEDBUG
   Serial.println("M41A simulator ready");
@@ -46,41 +45,37 @@ void M41aSimulator::setup()
 
   player.setup(epromVolume);
   player.setVolume(epromVolume);
+  state.setBulletsCount(MAX_BULLETS_COUNT);
 }
 
 void M41aSimulator::update()
 {
   player.update();
   rifleLedAnimator.update();
-  granadeLedAnimator.update();
+  grenadeLedAnimator.update();
   displayAnimator.update();
 
-  if ((displayAnimator.getCurrentAnimation() == CLOCKWISE_INIT || displayAnimator.getCurrentAnimation() == COUNTERCLOCKWISE_INIT) &&  displayAnimator.getElapsedTime() > 3000) {
+  if ((displayAnimator.getCurrentAnimation() == AnimationType::CLOCKWISE_LOADING || displayAnimator.getCurrentAnimation() == AnimationType::COUNTERCLOCKWISE_LOADING) &&  displayAnimator.getElapsedTime() > VOLUME_DISPLAY_TIMEOUT) {
     displayAnimator.stop();
-    bulletsCount = 0;
-    cock();
+    state.setBulletsCount(0);
+    rifleCock();
   }
 
-  button1.update();
-  button2.update();
-  button3.update();
-  button4.update();
+  rifleTriggerButton.update();
+  magazineReloadButton.update();
+  rifleCockButton.update();
+  grenadeTriggerButton.update();
   rotaryButton.update();
   
-  // if (!weaponReadyPlayed) {
-  //   weaponReadyPlayed = true;
-  //   player.playWeaponReady();
-  // }
-
-  if (button1.isPressed() && bulletsCount > 0)
+  if (rifleTriggerButton.isPressed() && state.getBulletsCount() > 0)
   {
     unsigned long currentMillis = millis();
 
     if (fireMillis < currentMillis) {
       fireMillis = currentMillis + FIRE_COUNTDOWN_INTERVAL;
-      bulletsCount--;
+      state.decrementBulletsCount();
       displayBullets();
-      if (bulletsCount == 0)
+      if (state.getBulletsCount() == 0)
       {
         rifleLedAnimator.stop();
         player.playEmptyMagazine();
@@ -88,8 +83,8 @@ void M41aSimulator::update()
     }
   }
 
-  // Jakmile vyprší timeout zobrazení hlasitosti, znovu se zobrazí počet nábojů.
-  if (volumeDisplayed && lastVolumeEncoderRun + VolumeDisplayTimeout < millis()) {
+  // If the volume display timeout expires, display the bullet count again
+  if (volumeDisplayed && lastVolumeEncoderRun + VOLUME_DISPLAY_TIMEOUT < millis()) {
     volumeDisplayed = false;
     displayBullets();
   }
@@ -98,9 +93,9 @@ void M41aSimulator::update()
 }
 
 
-void M41aSimulator::onAnimationCompletecCallback(M41aSimulator* instance)
+void M41aSimulator::onAnimationCompleteCallback(M41aSimulator* instance)
 {
-  instance->cock();
+  instance->rifleCock();
 }
 
 void M41aSimulator::rifleFireCallback(M41aSimulator* instance)
@@ -113,66 +108,66 @@ void M41aSimulator::rifleStopCallback(M41aSimulator* instance)
   instance->rifleStop();
 }
 
-void M41aSimulator:: cockCallback(M41aSimulator* instance)
+void M41aSimulator::rifleCockCallback(M41aSimulator* instance)
 {
-  instance->cock();
+  instance->rifleCock();
 }
 
-void M41aSimulator:: magazineReloadCallback(M41aSimulator* instance)
+void M41aSimulator::magazineReloadCallback(M41aSimulator* instance)
 {
   instance->magazineReload();
 }
 
-void M41aSimulator:: grandeFireCallback(M41aSimulator* instance)
+void M41aSimulator::grenadeFireCallback(M41aSimulator* instance)
 {
-  instance->granadeLoadOrFire();
+  instance->grenadeLoadOrFire();
 }
 
-void M41aSimulator:: volumeButtonShortPressCallback(M41aSimulator* instance)
+void M41aSimulator::volumeButtonShortPressCallback(M41aSimulator* instance)
 {
   instance->volumeButtonShortPress();
 }
 
-void M41aSimulator:: volumeButtonLongPressCallback(M41aSimulator* instance)
+void M41aSimulator::volumeButtonLongPressCallback(M41aSimulator* instance)
 {
   instance->volumeButtonLongPress();
 }
 
 
-void M41aSimulator::granadeLoadOrFire()
+void M41aSimulator::grenadeLoadOrFire()
 {
-  if (isGranadeLoaded) {
-      granadeFire();
+  if (state.isGrenadeLoaded()) {
+      grenadeFire();
   } else {
-      granadeLoad();
+      grenadeLoad();
   }
-  isGranadeLoaded = !isGranadeLoaded;
+  state.toggleGrenadeLoaded();
 }
 
-void M41aSimulator::granadeLoad()
+void M41aSimulator::grenadeLoad()
 {
   player.playGranadeLoad();
 }
 
-void M41aSimulator::granadeFire()
+void M41aSimulator::grenadeFire()
 {
   player.playGranadeFire();
-  granadeLedAnimator.ledAnimationStart();
+  grenadeLedAnimator.start();
 }
 
-void M41aSimulator::granadeExplosion()
+void M41aSimulator::grenadeExplosion()
 {
   player.playGranadeExplosion();
 }
 
 void M41aSimulator::rifleFire()
 {
-  if (bulletsCount <= 0) {
+  if (state.getBulletsCount() <= 0) {
     player.playEmptyMagazine();
     return;
   }
 
-  player.playRifleFire(bulletsCount);
+  player.playRifleFire(state.getBulletsCount());
   rifleLedAnimator.start();
 }
 
@@ -182,26 +177,26 @@ void M41aSimulator::rifleStop()
   player.stop();
 }
 
-void M41aSimulator::cock()
+void M41aSimulator::rifleCock()
 {
   player.playCock();
   rifleLedAnimator.stop();
-  displayAnimator.animateTransition(bulletsCount, MAX_BULETS_COUNT, 60);
-  bulletsCount = MAX_BULETS_COUNT;
+  displayAnimator.animateTransition(state.getBulletsCount(), MAX_BULLETS_COUNT, TRANSITION_DURATION_PER_10_UNITS);
+  state.setBulletsCount(MAX_BULLETS_COUNT);
 }
 
 void M41aSimulator::magazineReload()
 {
   player.playMagazineReload();
   rifleLedAnimator.stop();
-  displayAnimator.animateTransition(bulletsCount, MAX_BULETS_COUNT, 60);
-  bulletsCount = MAX_BULETS_COUNT;
+  displayAnimator.animateTransition(state.getBulletsCount(), MAX_BULLETS_COUNT, TRANSITION_DURATION_PER_10_UNITS);
+  state.setBulletsCount(MAX_BULLETS_COUNT);
 }
 
 void M41aSimulator::magazineEject()
 {
   player.playMagazineEject();
-  bulletsCount = 0;
+  state.setBulletsCount(0);
   rifleLedAnimator.stop();
   displayBullets();
 }
@@ -209,21 +204,21 @@ void M41aSimulator::magazineEject()
 void M41aSimulator::magazineLoad()
 {
   player.playMagazineLoad();
-  bulletsCount = MAX_BULETS_COUNT;
+  state.setBulletsCount(MAX_BULLETS_COUNT);
   rifleLedAnimator.stop();
   displayBullets();
 }
 
 void M41aSimulator::volumeButtonShortPress()
 {
-  // Kód pro zobrazení hlasitosti
+  // Display volume
   if (player.getPlaying()) return;
   displayVolume();
 }
 
 void M41aSimulator::volumeButtonLongPress()
 {
-  // Kód pro uložení hlasitosti
+  // Save volume to EEPROM
   writeVolumeToEprom(player.getVolume());
   if (player.getPlaying()) {
     return;
@@ -242,7 +237,7 @@ void M41aSimulator::processVolume()
     return;
   }
 
-  // Hlasitost se změnila
+  // Volume changed
   if (newVolume > volume)
   {
     player.volumeIncrement();
@@ -258,12 +253,6 @@ void M41aSimulator::processVolume()
 
   if (!player.getPlaying()) {
     displayVolume();
-    // if (newVolume > volume)
-    // {
-    //   player.playVolumeUp();
-    // } else {
-    //   player.playVolumeDown();
-    // }
   }
 
   newVolume = player.getVolume();
@@ -274,7 +263,7 @@ void M41aSimulator::processVolume()
 
 void M41aSimulator::doSoftVolumeRotaryEncoder()
 {
-  rotaryMasterValue = digitalRead(rotaryS1_Pin);
+  rotaryMasterValue = digitalRead(ROTARY_S1_PIN);
   if (oldRotaryMasterValue == rotaryMasterValue) {
     return;
   }
@@ -289,7 +278,7 @@ void M41aSimulator::doInternalVolumeDecisions()
   if (rotaryMasterValue == 0) return;
 
   int volume = player.getVolume();
-  int rotaryValue = digitalRead(rotaryS2_Pin);
+  int rotaryValue = digitalRead(ROTARY_S2_PIN);
   if (rotaryValue == 1)
   {
     newVolume = volume + 1;
@@ -300,10 +289,8 @@ void M41aSimulator::doInternalVolumeDecisions()
 
 void M41aSimulator::displayBullets()
 {
-  lastBulletsCount = bulletsCount;
   volumeDisplayed = false;
-
-  display.displayNumbers(bulletsCount / 10, bulletsCount % 10);
+  display.displayNumbers(state.getBulletsCount() / 10, state.getBulletsCount() % 10);
 }
 
 void M41aSimulator::displayVolume()
@@ -329,7 +316,7 @@ byte M41aSimulator::readVolumeFromEprom() {
   if (isVolumeEpromWriteFlag) {
     return EEPROM.read(VOLUME_ADDRESS);
   } else {
-    return DEFAULT_VOLUME_VALUE; // default volume value;
+    return DEFAULT_VOLUME_VALUE; // default volume value
   }
 }
 

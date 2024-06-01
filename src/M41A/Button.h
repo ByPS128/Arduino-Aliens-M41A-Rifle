@@ -8,11 +8,10 @@ public:
 
     Button();
     void setup(int pin, Callback onPress, Callback onRelease, void* context);
-
-    void update();
+    virtual void update();
     bool isPressed();
 
-private:
+protected:
     int pin;
     Callback onPress;
     Callback onRelease;

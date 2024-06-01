@@ -20,6 +20,15 @@
 
 class TwoDigitDisplay {
 public:
+  static constexpr byte TOP_SEGMENT = 128;
+  static constexpr byte UPPER_RIGHT_SEGMENT = 64;
+  static constexpr byte LOWER_RIGHT_SEGMENT = 32;
+  static constexpr byte BOTTOM_SEGMENT = 16;
+  static constexpr byte LOWER_LEFT_SEGMENT = 8;
+  static constexpr byte UPPER_LEFT_SEGMENT = 4;
+  static constexpr byte MIDDLE_SEGMENT = 2;
+  static constexpr byte DOT_SEGMENT = 1;
+  
   // Constants for segment codes for digits 0-9, minus sign, error, and blank
   const byte N0     = 0b11111100;
   const byte N1     = 0b01100000;
@@ -51,5 +60,5 @@ public:
 
 public:
   void displayNumbers(int dozens, int units);
-  void displaySegments(byte dozens, byte units);
+  void displaySegments(const byte dozens, const byte units);
 };

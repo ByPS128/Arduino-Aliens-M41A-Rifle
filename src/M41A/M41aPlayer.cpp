@@ -17,7 +17,7 @@ void M41aPlayer::setup(byte newVolume) {
 void M41aPlayer::update() {
   dfPlay.update();
   if (explosionScheduled && millis() >= explosionTime) {
-    dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
+    dfPlay.play(1, SAMPLE_GRENADE_EXPLOSION);
     explosionScheduled = false;
   }
 }
@@ -117,13 +117,13 @@ void M41aPlayer::playEmptyMagazine() {
 // Play a grenade load sound
 void M41aPlayer::playGranadeLoad() {
   explosionScheduled = false;  
-  dfPlay.play(1, SAMPLE_GRANADE_LOAD);
+  dfPlay.play(1, SAMPLE_GRENADE_LOAD);
 }
 
 // Play a grenade fire sound and schedule an explosion
 void M41aPlayer::playGranadeFire() {
-  dfPlay.play(1, SAMPLE_GRANADE_FIRE);
-  int delayTime = random(GRANADE_BALISTIC_DELAY_MIN, GRANADE_BALISTIC_DELAY_MAX);
+  dfPlay.play(1, SAMPLE_GRENADE_FIRE);
+  int delayTime = random(GRENADE_BALLISTIC_DELAY_MIN, GRENADE_BALLISTIC_DELAY_MAX);
   explosionTime = millis() + delayTime;
   explosionScheduled = true;  
 }
@@ -131,7 +131,7 @@ void M41aPlayer::playGranadeFire() {
 // Play a grenade explosion sound
 void M41aPlayer::playGranadeExplosion() {
   resetGranadeExplositon();
-  dfPlay.play(1, SAMPLE_GRANADE_EXPLOSION);
+  dfPlay.play(1, SAMPLE_GRENADE_EXPLOSION);
 }
 
 // Play a click sound

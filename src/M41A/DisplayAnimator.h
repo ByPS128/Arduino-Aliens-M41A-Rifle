@@ -1,13 +1,14 @@
 #pragma once
 
 #include <Arduino.h>
+#include "AppConstants.h"
 #include "TwoDigitDisplay.h"
 
-enum AnimationType {
+enum class AnimationType {
     NONE,
     TRANSITION,
-    CLOCKWISE_INIT,
-    COUNTERCLOCKWISE_INIT
+    CLOCKWISE_LOADING,
+    COUNTERCLOCKWISE_LOADING
 };
 
 class DisplayAnimator {
@@ -23,25 +24,31 @@ private:
     unsigned long segmentDuration;
     unsigned long lastSegmentUpdateTime;
 
-    const byte segmentSequence[8][2] = {
-        {128, 0},  // Top left segment on dozens display
-        {0, 128},  // Top right segment on units display
-        {0, 64},   // Upper right segment on units display
-        {0, 32},   // Lower right segment on units display
-        {0, 16},   // Bottom right segment on units display
-        {16, 0},   // Bottom left segment on dozens display
-        {8, 0},    // Lower left segment on dozens display
-        {4, 0}     // Upper left segment on dozens display
+private:
+    const byte LOADING_ANIMATION_SEGMENT_SEQUENCE[8][2] = {
+        {TwoDigitDisplay::TOP_SEGMENT, 0},           // Top left segment on dozens display
+        {0, TwoDigitDisplay::TOP_SEGMENT},           // Top right segment on units display
+        {0, TwoDigitDisplay::UPPER_RIGHT_SEGMENT},   // Upper right segment on units display
+        {0, TwoDigitDisplay::LOWER_RIGHT_SEGMENT},   // Lower right segment on units display
+        {0, TwoDigitDisplay::BOTTOM_SEGMENT},        // Bottom right segment on units display
+        {TwoDigitDisplay::BOTTOM_SEGMENT, 0},        // Bottom left segment on dozens display
+        {TwoDigitDisplay::LOWER_LEFT_SEGMENT, 0},    // Lower left segment on dozens display
+        {TwoDigitDisplay::UPPER_LEFT_SEGMENT, 0}     // Upper left segment on dozens display
     };
 
 public:
     DisplayAnimator();
     void setup(TwoDigitDisplay* displayInstance);
     void animateTransition(int fromNumber, int toNumber, unsigned long durationPer10Units);
-    void animateClockwiseInit(unsigned long segmentDurationMs);
-    void animateCounterClockwiseInit(unsigned long segmentDurationMs);
+    void animateClockwiseLoading(unsigned long segmentDurationMs);
+    void animateCounterClockwiseLoading(unsigned long segmentDurationMs);
     void stop();
     void update();
     unsigned long getElapsedTime() const;
     AnimationType getCurrentAnimation() const;
+
+private:
+  void updateTransitionAnimation(const unsigned long currentTime);
+  void updateClockwiseLoadingAnimation(const unsigned long currentTime);
+  void updateCounterClockwiseLoadingAnimation(const unsigned long currentTime);
 };
