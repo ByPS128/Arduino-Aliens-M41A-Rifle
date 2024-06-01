@@ -38,7 +38,7 @@ void TwoDigitDisplay::displayNumbers(int dozens, int units)
 }
 
 // Display specific segments on the two-digit display
-void TwoDigitDisplay::displaySegments(byte first, byte second)
+void TwoDigitDisplay::displaySegments(const byte first, const byte second)
 {
   // Set latch pin to LOW to prepare for data shifting
   digitalWrite(latchPin, LOW);

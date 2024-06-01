@@ -9,7 +9,7 @@ void GranadeLedAnimator::setup(int granadePwmLedPin, int timeToFullFadeOutInMs) 
 }
 
 // Start the grenade LED animation
-void GranadeLedAnimator::ledAnimationStart() {
+void GranadeLedAnimator::start() {
     startTime = millis();  // Record the start time of the animation
     isAnimating = true;    // Set the animation flag to true
     update();              // Immediately update the LED state
@@ -33,6 +33,10 @@ void GranadeLedAnimator::update() {
     } else {
         ledOff();  // Turn off the LED if the fade-out time has elapsed
     }
+}
+
+void GranadeLedAnimator::stop() {
+    ledOff();
 }
 
 // Turn off the grenade LED
