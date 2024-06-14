@@ -24,7 +24,9 @@ void M41aPlayer::update() {
 
 // Stop the player
 void M41aPlayer::stop() {
-  dfPlay.stop();
+  if (getPlaying()) {
+    dfPlay.stop();
+  }
 }
 
 // Check if the player is currently playing

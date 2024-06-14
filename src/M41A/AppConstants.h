@@ -37,7 +37,8 @@ constexpr int DATA_PIN = 13;                 // 74HC595 SER   - DS    (SDD)
 constexpr int VOLUME_DISPLAY_TIMEOUT = 3000; // Time in milliseconds for how long the volume will be displayed on the screen
 // after how long it takes to substract one bullet from the magazine.
 // My sound files for rifle shoot takes 8.5-9 seconds, so tis is the calculation of substraction interval:
-// 90ms * 95 bullets = 8550ms = 8.55sconstexpr int FIRE_COUNTDOWN_INTERVAL = 90;  // Interval in milliseconds between each bullet subtraction during firing
+// 90ms * 95 bullets = 8550ms = 8.55s
+constexpr int FIRE_COUNTDOWN_INTERVAL = 90;  // Interval in milliseconds between each bullet subtraction during firing
 constexpr int RIFLE_FIRE_FLASH_TIMEOUT = 60; // Duration in milliseconds for the rifle LED flash during firing
 constexpr int GRENADE_FLASH_FADEOUT_TIME = 700; // Duration in milliseconds for the grenade LED fadeout animation
 constexpr int TRANSITION_DURATION_PER_10_UNITS = 60; // Duration in milliseconds for each 10 units of transition in displayAnimator

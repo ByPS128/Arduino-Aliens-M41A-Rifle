@@ -1,31 +1,45 @@
 #include "LongPressButton.h"
 
 LongPressButton::LongPressButton()
-    : Button(), onShortPress(nullptr), onLongPress(nullptr), buttonPressTime(0), isPressHandled(false) {
+    : pin(-1), onShortPress(nullptr), onLongPress(nullptr), lastState(HIGH), pressed(false), buttonPressTime(0), isPressHandled(false) {
 }
 
-void LongPressButton::setup(int pin, unsigned long longPressTime, Callback onShortPress, Callback onLongPress, void* context) {
-    Button::setup(pin, nullptr, nullptr, context);
+void LongPressButton::setup(int pin, long unsigned int longPressTime, Callback onShortPress, Callback onLongPress, void* context) {
+    this->pin = pin;
     this->onShortPress = onShortPress;
     this->onLongPress = onLongPress;
     this->longPressTime = longPressTime;
+    this->context = context;
+
+    pinMode(pin, INPUT_PULLUP);
+    digitalWrite(pin, HIGH);
 }
 
 void LongPressButton::update() {
-    Button::update();
+    if (pin == -1) return; // Ensure setup has been called
 
-    if (isPressed()) {
-        if (!isPressHandled) {
-            buttonPressTime = millis();
-            isPressHandled = false;
-        } else if (millis() - buttonPressTime >= longPressTime && onLongPress) {
-            isPressHandled = true;
-            onLongPress(context);
+    int currentState = digitalRead(pin);
+    if (currentState != lastState) {
+        pressed = currentState == LOW;
+        if (pressed) {
+            buttonPressTime = millis(); // Saving the button press time
+            isPressHandled = false; // Reset flag for action processing
+        } else { // The pusher has been released
+            if (!isPressHandled &&onShortPress) {
+              isPressHandled = true; // Setting the flag that the action has been processed
+              onShortPress(context);// Checking if the action has not already been processed
+            }
         }
-    } else {
-        if (!isPressHandled && onShortPress) {
-            isPressHandled = true;
-            onShortPress(context);
+        lastState = currentState;
+    } else if (currentState == LOW && !isPressHandled) {
+        // Checking if the press time has exceeded the long press limit
+        if (millis() - buttonPressTime >= longPressTime && onLongPress) {
+            isPressHandled = true; // Setting the flag that the action has been processed
+            onLongPress(context); // Long press processing
         }
     }
+}
+
+bool LongPressButton::isPressed() {
+    return pressed;
 }

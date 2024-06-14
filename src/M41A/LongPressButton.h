@@ -1,17 +1,25 @@
 #pragma once
 
-#include "Button.h"
+#include <Arduino.h>
 
-class LongPressButton : public Button {
+class LongPressButton {
 public:
+    typedef void (*Callback)(void*);
+
     LongPressButton();
-    void setup(int pin, unsigned long longPressTime, Callback onShortPress, Callback onLongPress, void* context);
-    void update() override;
+    void setup(int pin, long unsigned int longPressTime, Callback onShortPress, Callback onLongPress, void* context);
+
+    void update();
+    bool isPressed();
 
 private:
+    int pin;
     Callback onShortPress;
     Callback onLongPress;
+    void* context;
+    int lastState;
+    bool pressed;
     unsigned long buttonPressTime;
     bool isPressHandled;
-    unsigned long longPressTime;
+    int longPressTime;
 };
