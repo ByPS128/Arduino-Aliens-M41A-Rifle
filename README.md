@@ -42,7 +42,7 @@ I developed the scheme in KiCad (free). It's my first schematic, so please excus
 https://www.kicad.org/
 
 Schema preview:
-![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/8cb075be-de70-401b-b8a4-4032c5b61676)
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/358185b6-503f-456e-9be2-1b59e0d10f03)
 
 
 
