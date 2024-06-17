@@ -42,8 +42,7 @@ I developed the scheme in KiCad (free). It's my first schematic, so please excus
 https://www.kicad.org/
 
 Schema preview:
-![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/358185b6-503f-456e-9be2-1b59e0d10f03)
-
+![M41A-Schematic](https://github.com/ByPS128/Arduino-Aliens-M41A-Rifle/assets/44829883/ca20bb5d-8ef9-427a-b090-26972b783749)
 
 
 ## Schama descriptions about condensators used as filter of peaks and noise:
