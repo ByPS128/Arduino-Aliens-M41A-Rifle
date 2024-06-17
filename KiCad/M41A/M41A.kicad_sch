@@ -8,7 +8,7 @@
 		(title "Aliens M41A Rifle sound and lights module")
 		(date "2024-05-20")
 		(rev "1.1")
-		(comment 1 "https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle")
+		(comment 1 "https://github.com/ByPS128/Arduino-Aliens-M41A-Rifle")
 		(comment 2 "Developer: Petr Škaloud aka ByPS")
 	)
 	(lib_symbols
@@ -3596,7 +3596,7 @@
 	)
 	(wire
 		(pts
-			(xy 151.13 130.81) (xy 151.13 92.71)
+			(xy 151.13 133.35) (xy 151.13 92.71)
 		)
 		(stroke
 			(width 0)
@@ -3626,7 +3626,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 118.11) (xy 158.75 118.11)
+			(xy 152.4 119.38) (xy 158.75 119.38)
 		)
 		(stroke
 			(width 0)
@@ -3656,7 +3656,7 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 72.39) (xy 114.3 118.11)
+			(xy 114.3 69.85) (xy 114.3 118.11)
 		)
 		(stroke
 			(width 0)
@@ -3666,7 +3666,7 @@
 	)
 	(wire
 		(pts
-			(xy 104.14 146.05) (xy 81.28 146.05)
+			(xy 110.49 146.05) (xy 81.28 146.05)
 		)
 		(stroke
 			(width 0)
@@ -3746,6 +3746,16 @@
 	)
 	(wire
 		(pts
+			(xy 110.49 72.39) (xy 110.49 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "36d71e5a-1d76-4e87-affd-073109b35d62")
+	)
+	(wire
+		(pts
 			(xy 66.04 91.44) (xy 66.04 92.71)
 		)
 		(stroke
@@ -3796,33 +3806,13 @@
 	)
 	(wire
 		(pts
-			(xy 35.56 161.29) (xy 29.21 161.29)
+			(xy 29.21 161.29) (xy 50.8 161.29)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "43e17ecd-53df-4d20-a804-c6a68d0ff31a")
-	)
-	(wire
-		(pts
-			(xy 35.56 158.75) (xy 50.8 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "45cafb2e-1c5e-4409-847a-9bf39d002fdf")
-	)
-	(wire
-		(pts
-			(xy 50.8 161.29) (xy 38.1 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "46a64ea2-1416-4044-ab4a-315ac4671f68")
 	)
 	(wire
 		(pts
@@ -3866,16 +3856,6 @@
 	)
 	(wire
 		(pts
-			(xy 35.56 158.75) (xy 35.56 161.29)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4f13f4c4-7ed3-4012-928c-aaa83b3cc44b")
-	)
-	(wire
-		(pts
 			(xy 74.93 109.22) (xy 60.96 109.22)
 		)
 		(stroke
@@ -3886,7 +3866,7 @@
 	)
 	(wire
 		(pts
-			(xy 158.75 130.81) (xy 151.13 130.81)
+			(xy 158.75 133.35) (xy 151.13 133.35)
 		)
 		(stroke
 			(width 0)
@@ -3903,16 +3883,6 @@
 			(type default)
 		)
 		(uuid "57144b22-b1d3-4614-a012-f8088580fd82")
-	)
-	(wire
-		(pts
-			(xy 104.14 69.85) (xy 104.14 146.05)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "59dcc966-be20-42c7-a312-906e66f32102")
 	)
 	(wire
 		(pts
@@ -3946,16 +3916,6 @@
 	)
 	(wire
 		(pts
-			(xy 114.3 72.39) (xy 118.11 72.39)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "5e29c091-d749-47c7-a97a-1ddcc6634533")
-	)
-	(wire
-		(pts
 			(xy 218.44 34.29) (xy 218.44 49.53)
 		)
 		(stroke
@@ -3966,7 +3926,7 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 130.81) (xy 181.61 130.81)
+			(xy 168.91 133.35) (xy 181.61 133.35)
 		)
 		(stroke
 			(width 0)
@@ -4016,7 +3976,7 @@
 	)
 	(wire
 		(pts
-			(xy 168.91 118.11) (xy 181.61 118.11)
+			(xy 168.91 119.38) (xy 181.61 119.38)
 		)
 		(stroke
 			(width 0)
@@ -4063,6 +4023,16 @@
 			(type default)
 		)
 		(uuid "760f3606-a6dd-4513-a1ed-1d346c96e929")
+	)
+	(wire
+		(pts
+			(xy 110.49 72.39) (xy 118.11 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "779becca-271c-475e-92af-eb78336bad42")
 	)
 	(wire
 		(pts
@@ -4136,16 +4106,6 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 69.85) (xy 104.14 69.85)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "89a8969f-44a8-4ad0-b6a8-d7f9fb9fd1d6")
-	)
-	(wire
-		(pts
 			(xy 147.32 49.53) (xy 165.1 49.53)
 		)
 		(stroke
@@ -4216,16 +4176,6 @@
 	)
 	(wire
 		(pts
-			(xy 38.1 161.29) (xy 38.1 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "97c61d42-8779-44ab-8ca4-8434adef26e0")
-	)
-	(wire
-		(pts
 			(xy 66.04 87.63) (xy 118.11 87.63)
 		)
 		(stroke
@@ -4253,16 +4203,6 @@
 			(type default)
 		)
 		(uuid "a30c2d07-17ae-480a-a340-15b3c7c1c144")
-	)
-	(wire
-		(pts
-			(xy 30.48 156.21) (xy 30.48 158.75)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a59004cd-a828-4c03-a171-4e90a8dbcc81")
 	)
 	(wire
 		(pts
@@ -4356,7 +4296,7 @@
 	)
 	(wire
 		(pts
-			(xy 30.48 158.75) (xy 29.21 158.75)
+			(xy 29.21 158.75) (xy 50.8 158.75)
 		)
 		(stroke
 			(width 0)
@@ -4376,7 +4316,7 @@
 	)
 	(wire
 		(pts
-			(xy 152.4 90.17) (xy 152.4 118.11)
+			(xy 152.4 90.17) (xy 152.4 119.38)
 		)
 		(stroke
 			(width 0)
@@ -4393,16 +4333,6 @@
 			(type default)
 		)
 		(uuid "d1c9e5a7-fff2-4fe7-8b48-2290c010609b")
-	)
-	(wire
-		(pts
-			(xy 38.1 156.21) (xy 30.48 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d4f53527-ba1f-4024-a0c5-f59496292e28")
 	)
 	(wire
 		(pts
@@ -4453,6 +4383,16 @@
 			(type default)
 		)
 		(uuid "df4305e8-fa21-4fe5-bdbe-dac96a16e160")
+	)
+	(wire
+		(pts
+			(xy 114.3 69.85) (xy 118.11 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e049ed50-2235-4ae8-9550-fdcc26cb5e19")
 	)
 	(wire
 		(pts
@@ -4566,7 +4506,7 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 163.83 118.11 0)
+		(at 163.83 119.38 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4575,7 +4515,7 @@
 		(fields_autoplaced yes)
 		(uuid "0085030b-9cbb-4623-8c94-ec38ceb0cbfd")
 		(property "Reference" "BTN3"
-			(at 163.83 110.49 0)
+			(at 163.83 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4583,7 +4523,7 @@
 			)
 		)
 		(property "Value" "Cock"
-			(at 163.83 113.03 0)
+			(at 163.83 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4591,7 +4531,7 @@
 			)
 		)
 		(property "Footprint" "ProjectLibrary:Button Leads 2x 2.54"
-			(at 163.83 113.03 0)
+			(at 163.83 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4600,7 +4540,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 163.83 113.03 0)
+			(at 163.83 114.3 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4609,7 +4549,7 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
-			(at 163.83 118.11 0)
+			(at 163.83 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4836,7 +4776,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 181.61 130.81 90)
+		(at 181.61 133.35 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4845,7 +4785,7 @@
 		(fields_autoplaced yes)
 		(uuid "37b6668c-90e5-4b9e-98d8-38e7e92c62ba")
 		(property "Reference" "#PWR09"
-			(at 187.96 130.81 0)
+			(at 187.96 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4854,7 +4794,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 185.42 130.8099 90)
+			(at 185.42 133.3499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4863,7 +4803,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 181.61 130.81 0)
+			(at 181.61 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4872,7 +4812,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 181.61 130.81 0)
+			(at 181.61 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4881,7 +4821,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 181.61 130.81 0)
+			(at 181.61 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5145,7 +5085,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1000"
+		(property "Value" "1K"
 			(at 116.84 123.1899 0)
 			(effects
 				(font
@@ -5957,7 +5897,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 181.61 118.11 90)
+		(at 181.61 119.38 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -5966,7 +5906,7 @@
 		(fields_autoplaced yes)
 		(uuid "9d400c2f-cf6c-4cbf-8334-7ab6e2c53ed5")
 		(property "Reference" "#PWR08"
-			(at 187.96 118.11 0)
+			(at 187.96 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5975,7 +5915,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 185.42 118.1099 90)
+			(at 185.42 119.3799 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5984,7 +5924,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 181.61 118.11 0)
+			(at 181.61 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5993,7 +5933,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 181.61 118.11 0)
+			(at 181.61 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6002,7 +5942,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 181.61 118.11 0)
+			(at 181.61 119.38 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6731,7 +6671,7 @@
 	)
 	(symbol
 		(lib_id "Switch:SW_Push")
-		(at 163.83 130.81 0)
+		(at 163.83 133.35 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -6740,7 +6680,7 @@
 		(fields_autoplaced yes)
 		(uuid "e091b666-9c61-4301-850c-c2805ae9e841")
 		(property "Reference" "BTN4"
-			(at 163.83 123.19 0)
+			(at 163.83 125.73 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6748,7 +6688,7 @@
 			)
 		)
 		(property "Value" "Granade fire"
-			(at 163.83 125.73 0)
+			(at 163.83 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6756,7 +6696,7 @@
 			)
 		)
 		(property "Footprint" "ProjectLibrary:Button Leads 2x 2.54"
-			(at 163.83 125.73 0)
+			(at 163.83 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6765,7 +6705,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 163.83 125.73 0)
+			(at 163.83 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6774,7 +6714,7 @@
 			)
 		)
 		(property "Description" "Push button switch, generic, two pins"
-			(at 163.83 130.81 0)
+			(at 163.83 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
