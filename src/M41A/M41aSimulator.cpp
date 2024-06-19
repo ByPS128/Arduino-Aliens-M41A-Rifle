@@ -174,7 +174,9 @@ void M41aSimulator::rifleFire()
 void M41aSimulator::rifleStop()
 {
   rifleLedAnimator.stop(); 
-  player.stop();
+  if (state.getBulletsCount() > 0) {
+    player.stop();
+  }
 }
 
 void M41aSimulator::rifleCock()
