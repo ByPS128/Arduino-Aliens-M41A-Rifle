@@ -6,7 +6,7 @@
 static constexpr uint8_t PIN_MP3_TX = 2; // Connects to module's RX
 static constexpr uint8_t PIN_MP3_RX = 3; // Connects to module's TX
 
-static constexpr int MAX_VOLUME = 22; // DFPlayer has a volume range from 0 to 30, but it freezes at 24.
+static constexpr int MAX_VOLUME = 30; // DFPlayer has a volume range from 0 to 30, it freezes at 24 in my case when arduino is powered by USB, the 3W speker and build in amplifier eats too much.
 static constexpr int VOLUME_ADDRESS = 10; // EEPROM address for volume storage
 static constexpr int INIT_FLAG_ADDRESS = 9;  // Address for depositing the control flag
 static constexpr byte INITIALIZED_FLAG = 0xA5;  // Some specific value for checking initialization, typically greater than MAX_VOLUME, to indicate that the volume has not yet been stored.

@@ -2,24 +2,25 @@
 
 // Constructor initializes the SoftwareSerial with the specified pins
 DFPlay::DFPlay()
-  : mySerial(PIN_MP3_RX, PIN_MP3_TX) {
+  : dfPlayerSerial(PIN_MP3_RX, PIN_MP3_TX) {
 }
 
 // Setup initializes the DFPlayer with the specified volume and acknowledgment setting
 void DFPlay::setup(byte newVolume, bool enableAck) {
   playing = false;
 
-  mySerial.begin(9600);
+  dfPlayerSerial.begin(9600);
   if (enableAck) {
     enableACK();
   } else {
     disableACK();
   }
 
-  reset();
-  init();
+  //reset(true); // At boot time the reset is not necessary.
+  init(false); // false parameter means: no not wait
 
   setVolume(newVolume);
+  waitAndEatAvailable(DFPLAYER_INIT_TIME);
 
 #ifdef _DEBUG
   Serial.println("DFPlayer ready");
@@ -32,15 +33,19 @@ void DFPlay::update() {
 }
 
 // Reset the DFPlayer module
-void DFPlay::reset() {
+void DFPlay::reset(bool performWaiting) {
   exe_cmd(CMD_RESET, 0, 0);
-  delay(DFPLAYER_RESET_TIME); // Wait for the DFPlayer to restart
+  if (performWaiting) {
+    waitAndEatAvailable(DFPLAYER_RESET_TIME); // Wait for the DFPlayer to restart
+  }
 }
 
 // Initialize the DFPlayer module
-void DFPlay::init() {
+void DFPlay::init(bool performWaiting) {
   exe_cmd(CMD_INIT, 0, DFPLAYER_DEVICE_SD);
-  delay(DFPLAYER_INIT_TIME); // Wait for the DFPlayer to initialize
+  if (performWaiting) {
+    waitAndEatAvailable(DFPLAYER_INIT_TIME); // Wait for the DFPlayer to initialize
+  }
 }
 
 // Play a specific file in a specific folder
@@ -194,6 +199,18 @@ bool DFPlay::waitAvailable(unsigned long duration) {
   return true;
 }
 
+// Wait for available data within a specified duration
+void DFPlay::waitAndEatAvailable(unsigned long duration) {
+  unsigned long timeOut = millis() + duration;
+  while (timeOut > millis() || dfPlayerSerial.available()) {
+    if (dfPlayerSerial.available()) {
+      dfPlayerSerial.read();
+      continue;
+    }
+    delay(2);
+  }
+}
+
 // Convert a byte array to uint16_t
 uint16_t DFPlay::arrayToUint16(uint8_t *array) {
   uint16_t value = *array;
@@ -301,10 +318,10 @@ uint16_t DFPlay::calculateCheckSum(byte *buffer) {
 
 // Check if data is available and read it
 bool DFPlay::available() {
-  while (mySerial.available()) {
+  while (dfPlayerSerial.available()) {
     delay(0);
     if (_receivedIndex == 0) {
-      _received[Stack_Header] = mySerial.read();
+      _received[Stack_Header] = dfPlayerSerial.read();
 #ifdef _DEBUG
       Serial.print(F("received: "));
       Serial.print(_received[_receivedIndex], HEX);
@@ -314,7 +331,7 @@ bool DFPlay::available() {
         _receivedIndex++;
       }
     } else {
-      _received[_receivedIndex] = mySerial.read();
+      _received[_receivedIndex] = dfPlayerSerial.read();
 #ifdef _DEBUG
       Serial.print(_received[_receivedIndex], HEX);
       Serial.print(F(" "));
@@ -375,7 +392,7 @@ void DFPlay::sendStack() {
   Serial.println();
 #endif
 
-  mySerial.write(_sending, DFPLAYER_SEND_LENGTH);
+  dfPlayerSerial.write(_sending, DFPLAYER_SEND_LENGTH);
   _timeOutTimer = millis();
   _isSending = _sending[Stack_ACK];
 

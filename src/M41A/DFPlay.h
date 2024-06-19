@@ -67,8 +67,8 @@ private:
 
   static const byte DEFAULT_DIRECTORY_NUMBER = 1;
 
-  static const int DFPLAYER_RESET_TIME = 1000;
   static const int DFPLAYER_INIT_TIME = 500;
+  static const int DFPLAYER_RESET_TIME = 1000;
 
 public:
   static const bool ACK_ENABLED  = true;
@@ -124,7 +124,7 @@ private:
   #define Advertise 7
 
 private:
-  SoftwareSerial mySerial;  // SoftwareSerial object for communication with DFPlayer Mini
+  SoftwareSerial dfPlayerSerial;  // SoftwareSerial object for communication with DFPlayer Mini
 
 private:
   unsigned long _timeOutDuration = 500;
@@ -148,8 +148,8 @@ public:
   DFPlay();
   void setup(byte newVolume, bool enableAck);
   void update();
-  void reset();
-  void init();
+  void reset(bool performWaiting);
+  void init(bool performWaiting);
   bool getPlaying();
   byte getVolume();
   void setVolume(byte newVolume);
@@ -168,6 +168,7 @@ private:
   bool handleMessage(uint8_t type, uint16_t parameter);
   bool handleError(uint8_t type, uint16_t parameter = 0);
   bool waitAvailable(unsigned long duration = 0);
+  void waitAndEatAvailable(unsigned long duration);
   uint16_t arrayToUint16(uint8_t *array);
   bool validateStack();
   void parseStack();

@@ -7,7 +7,6 @@ M41aPlayer::M41aPlayer() {
 // Setup the M41aPlayer with the specified volume
 void M41aPlayer::setup(byte newVolume) {
   dfPlay.setup(newVolume, dfPlay.ACK_DISABLED);
-
 #ifdef _DEBUG
   Serial.println("M41A player ready");
 #endif
