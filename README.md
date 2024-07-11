@@ -9,7 +9,7 @@ The hardware is implemented using an Arduino Nano and a DF Player (also known as
 
 
 
-## So what does intendedHW version consist of:
+## So what does intended HW version consist of:
 
 There are many M41A mock-ups on the market, including 3D printed ones. The version I was sounding did not have a working grenade launcher and it also did not have a retractable slide. We used the magazine space to house the electronics and so this version of the 3D printed rifle has quite a lot of limitations.
 However, the software is easy to adapt for a larger application with multiple input signals.
@@ -28,12 +28,8 @@ However, the software is easy to adapt for a larger application with multiple in
 
 
 ## Want see how it works?
-Here is short video of the project at bread board:
-
-(click to go to youtube and see the video - [youtu.be/FFHJ8ouhOAM](https://youtu.be/FFHJ8ouhOAM))
-
-[![Module in action](https://github.com/ByPS128/Arduino-Aliens-M41A-Riffle/assets/44829883/03dab6c4-cd19-43dc-bb2e-636f7de678b0)](https://youtu.be/FFHJ8ouhOAM)
-
+Here is updated video of the project in action with description of all functions:
+https://www.youtube.com/watch?v=IwG0UBBIASA
 
 ## Schematic
 
