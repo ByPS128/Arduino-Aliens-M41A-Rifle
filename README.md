@@ -26,10 +26,33 @@ However, the software is easy to adapt for a larger application with multiple in
 * Double digit 7 segment display
 * Required resistors, capacitor and shocky protection diode
 
+## 3D print
+I made a 3D models of magazine foot where I placed:
+* battery
+* switch for turning on/off
+* rotary encoder to adjust volume
+
+You can use my 3D models for 3D printing if compatible with yours models of M41A rifle.
+
+I am using OnShape to create models, here is direct link if you are interested in:
+https://cad.onshape.com/documents/143c32e288eb70a4674d24e8/v/e97b14a1ca8f76a05194cd48/e/891a4cec0397cb99cd8f56b7
+
+I will be glad if you use them from my printables profile:
+TODO Add link to printebles
+
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Rifle/assets/44829883/0f8dd264-7754-47c9-81a8-956255b74648)
+
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Rifle/assets/44829883/8c0af95d-9c43-4fc0-8ebf-5bc0558242af)
+
 
 ## Want see how it works?
 Here is updated video of the project in action with description of all functions:
+
 https://www.youtube.com/watch?v=IwG0UBBIASA
+
+![image](https://github.com/ByPS128/Arduino-Aliens-M41A-Rifle/assets/44829883/748ee3ed-73b3-4c45-976d-facd9648e9e7)
+
+
 
 ## Schematic
 
