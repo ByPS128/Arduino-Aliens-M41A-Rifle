@@ -37,7 +37,7 @@ You can use my 3D models for 3D printing if compatible with yours models of M41A
 I am using OnShape to create models, here is direct link if you are interested in:
 https://cad.onshape.com/documents/143c32e288eb70a4674d24e8/v/e97b14a1ca8f76a05194cd48/e/891a4cec0397cb99cd8f56b7
 
-I will be glad if you use them, se heere at printables:
+I will be glad if you use them, see here at Printables.com:
 
 https://www.printables.com/cs/model/940214-m41a-rifle-magazine-foot-for-arduino-implementatio
 
